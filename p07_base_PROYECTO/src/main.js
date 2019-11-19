@@ -6,8 +6,8 @@ const config = {
     version: "0.0.1",		        //Versión alfanumérica (opcional)
     type: Phaser.AUTO,		        //Tipo de renderizado (WEBGL, CANVAS, AUTO)
                                     // AUTO: busca primero WEBGL y si no está disponible eligirá CANVAS
-    width: 640,			            //Ancho de pantalla del juego
-    height: 360, 			        //Alto de pantalla del juego
+    width: 1150,			            //Ancho de pantalla del juego
+    height: 648, 			        //Alto de pantalla del juego
     parent: "contenedor",		    //Nombre del id del elemento <div> en el index.html
                                     // se refiere a dónde se pondrá el canvas o lienzo
     pixelArt: true,		            //Diseño con pixeles definidos (no borrosos)
