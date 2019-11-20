@@ -21,7 +21,9 @@ const config = {
                 "#2ecc71",
                 "#e74c3c", 
                 "#000000"]
-    }
+    },
+    
+
 };
 
 const game = new Phaser.Game(config);

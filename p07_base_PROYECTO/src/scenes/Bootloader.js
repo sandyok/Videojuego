@@ -19,6 +19,9 @@ class Bootloader extends Phaser.Scene{
          this.load.image("menu_capa_3", "Bosque_Capas/Inicio_bosque_capa_3.png");
          this.load.image("menu_capa_4", "Bosque_Capas/Inicio_bosque_capa_4.png");
  
+        // Titulo
+        this.load.image("titulo", "titulo2Willowbrook.png");
+
          // Botones
          this.load.image("btn_Jugar", "Botones/btn_Jugar3.png");
          this.load.image("btn_Ajustes", "Botones/btn_Ajustes3.png");
@@ -83,6 +86,10 @@ class Bootloader extends Phaser.Scene{
          this.grupo.children.entries[6].setScale(1.8);
          this.grupo.children.entries[6].setDepth(3);
 
+         // Titulo del juego
+         this.titulo = this.add.image(570, 185, 'titulo').setScale(.20, .20).setDepth(5);
+
+
          // Contenedor de Opciones
         const container = this.add.container(630,350).setDepth(5);
 
@@ -90,9 +97,9 @@ class Bootloader extends Phaser.Scene{
         const eventos_btn = Phaser.Input.Events;
 
         // Botones
-        this.btn_Jugar = this.add.image(-60, -80, "btn_Jugar").setScale(.12,.12).setDepth(5).setInteractive();
-        this.btn_Ajustes = this.add.image(-60, 0, "btn_Ajustes").setScale(.12,.12).setDepth(5).setInteractive();
-        this.btn_Ayuda = this.add.image(-60, 70, "btn_Ayuda").setScale(.12,.12).setDepth(5).setInteractive();
+        this.btn_Jugar = this.add.image(-60, -30, "btn_Jugar").setScale(.10,.10).setDepth(5).setInteractive();
+        this.btn_Ajustes = this.add.image(-60, 50, "btn_Ajustes").setScale(.10,.10).setDepth(5).setInteractive();
+        this.btn_Ayuda = this.add.image(-60, 120, "btn_Ayuda").setScale(.10,.10).setDepth(5).setInteractive();
 
         console.log(container);
 
