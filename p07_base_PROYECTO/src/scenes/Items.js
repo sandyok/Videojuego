@@ -20,6 +20,17 @@ class Items extends Phaser.Scene{
         this.add.image(990, 20, 'cont_item_vacio').setScale(1.0).setOrigin(0.0, 0.0);
         this.add.image(1070, 20, 'cont_item_vacio').setScale(1.0).setOrigin(0.0, 0.0);
 
+        // // Crear un nuevo evento
+        this.registry.events.on('eventoR', (dato) => {
+            console.log('Se ha emitido el evento ', dato);
+            this.resortera = this.add.image(1015, 25, "resortera").setOrigin(0,0).setScale(0.42, 0.42).setDepth(7);
+        });
+
+        
+
+        //Resortera
+        //this.resortera = this.physics.add.image(220, 280, "resortera").setOrigin(0,0).setScale(0.3, 0.3);
+
     }
 
     colocarItem() {
