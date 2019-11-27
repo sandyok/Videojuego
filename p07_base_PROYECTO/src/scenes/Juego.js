@@ -109,8 +109,11 @@ class Juego extends Phaser.Scene{
 
         this.physics.add.collider(this.grupo, this.harper_walking);
 
+        // // Declarar set
+        this.data.set('resorteras', 3);
+        this.data.set('piedras', 5);
+        console.log(this.data.list);
 
-        
 
         // Resortera
         this.resortera = this.physics.add.image(200, 280, "resortera").setOrigin(0,0).setScale(0.3, 0.3);
@@ -121,59 +124,85 @@ class Juego extends Phaser.Scene{
             this.resortera.destroy();
             this.registry.events.emit('eventoR', true);
             //this.resortera = this.add.image(938, 120, "resortera").setOrigin(0,0).setScale(0.42, 0.42).setDepth(7);
+
+            // Incrementar (disminuir) el valor de algun set
+            this.data.list.resorteras -= 1;
+            console.log("Hay una resortera menos disponible");
             
-            //this.sce
-
-        });
-
-
-        // Piedras 
-        this.piedraI = this.physics.add.image(300, 280, "piedra").setOrigin(0,0).setScale(0.1, 0.1);
-
-        // this.grupoPiedras = this.physics.add.staticGroup({
-        //     key: 'piedra',
-        //         repeat: 2,
-        //         setXY: {
-        //                 x: 320,
-        //                 y: 560,
-        //                 stepX: 100
-        //         }
-        // });
-
-        // this.grupoPiedras.children.iterate( (piedra) => {
-        //     piedra.setScale(0.1, 0.1);
-
-        //     // // Cambiamos el tamano del colisionador
-        //     piedra.setSize(20, 25);
-        //     piedra.setOffset(125, 125);
-        // } );
-
-        this.physics.add.collider(this.grupo, this.piedraI);
-
-        this.physics.add.collider(this.harper_walking, this.piedraI, () => {
-
-            this.piedraI.destroy();
-            this.piedraI = this.add.image(120, 30, "piedra").setOrigin(0,0).setScale(0.15, 0.15);
-            console.log("Colision con: ");
-            //this.grupoPiedras.getChildren()[1].destroy();
-        });
-
-        this.piedraII = this.physics.add.image(400, 280, "piedra").setOrigin(0,0).setScale(0.1, 0.1);
-
-        this.physics.add.collider(this.grupo, this.piedraII);
-
-        this.physics.add.collider(this.harper_walking, this.piedraII, () => {
-
-            this.piedraII.destroy();
-            // T E X T O ==================================================================================================
-            this.texto = this.add.text(154, 55, 'X2', {
-                fontSize: 18
-            });
-
         });
 
         
-        this.contenedor = this.add.image(10, 10, "contenedor").setOrigin(0,0).setScale(2.5, 2.5);
+
+
+        // Piedras 
+        //this.piedraI = this.physics.add.image(300, 280, "piedra").setOrigin(0,0).setScale(0.1, 0.1);
+
+        this.grupoPiedras = this.physics.add.staticGroup({
+            key: 'piedra',
+                repeat: 1,
+                setXY: {
+                        x: 320,
+                        y: 560,
+                        stepX: 100
+                }
+        });
+
+        this.grupoPiedras.children.iterate( (piedra) => {
+            piedra.setScale(0.1, 0.1);
+
+            // // Cambiamos el tamano del colisionador
+            piedra.setSize(20, 25);
+            piedra.setOffset(125, 125);
+        } );
+
+        //var contador = ;
+
+        this.physics.add.collider(this.grupo, this.grupoPiedras);
+        this.physics.add.collider(this.harper_walking, this.grupoPiedras, (contador) => {
+
+            //this.piedraI.destroy();
+            //this.grupoPiedras.remove(this.grupoPiedras.getChildren()[0]);
+            this.grupoPiedras.getChildren()[0].destroy();
+            //this.piedraI = this.add.image(120, 30, "piedra").setOrigin(0,0).setScale(0.15, 0.15);
+            //console.log("Colision con: ");
+            //this.grupoPiedras.getChildren()[1].destroy();
+
+            this.registry.events.emit('eventoP', contador);
+            this.data.list.piedras -= 1;
+            //contador = contador+1;
+            console.log("Hay una piedra menos disponible");
+        });
+
+        //this.physics.add.collider(this.grupo, this.piedraI);
+
+        // this.physics.add.collider(this.harper_walking, this.piedraI, () => {
+
+        //     this.piedraI.destroy();
+        //     //this.piedraI = this.add.image(120, 30, "piedra").setOrigin(0,0).setScale(0.15, 0.15);
+        //     console.log("Colision con: ");
+        //     //this.grupoPiedras.getChildren()[1].destroy();
+
+        //     this.registry.events.emit('eventoP', true);
+        //     this.data.list.piedras -= 1;
+        //     console.log("Hay una piedra menos disponible");
+        // });
+
+        // // this.piedraII = this.physics.add.image(400, 280, "piedra").setOrigin(0,0).setScale(0.1, 0.1);
+
+        // // this.physics.add.collider(this.grupo, this.piedraII);
+
+        // // this.physics.add.collider(this.harper_walking, this.piedraII, () => {
+
+        // //     this.piedraII.destroy();
+        // //     // T E X T O ==================================================================================================
+        // //     this.texto = this.add.text(154, 55, 'X2', {
+        // //         fontSize: 18
+        // //     });
+
+        // // });
+
+        
+        //this.contenedor = this.add.image(10, 10, "contenedor").setOrigin(0,0).setScale(2.5, 2.5);
 
         
 

@@ -26,7 +26,22 @@ class Items extends Phaser.Scene{
             this.resortera = this.add.image(1015, 25, "resortera").setOrigin(0,0).setScale(0.42, 0.42).setDepth(7);
         });
 
-        
+        // // Crear un nuevo evento
+        this.registry.events.on('eventoP', (dato) => {
+            console.log('Se ha emitido el evento ', dato);
+            this.piedraI = this.add.image(1087, 30, "piedra").setOrigin(0,0).setScale(0.15, 0.15);
+            //this.resortera = this.add.image(1015, 25, "resortera").setOrigin(0,0).setScale(0.42, 0.42).setDepth(7);
+
+            if (dato == 0) {
+                
+
+            } else {
+                this.texto = this.add.text(1087, 55, 'X'+dato, {
+                    fontSize: 18
+                });
+            }
+
+        });        
 
         //Resortera
         //this.resortera = this.physics.add.image(220, 280, "resortera").setOrigin(0,0).setScale(0.3, 0.3);
