@@ -36,9 +36,17 @@ class Items extends Phaser.Scene{
                 
 
             } else {
-                this.texto = this.add.text(1087, 55, 'X'+dato, {
+                
+                this.texto = this.add.text(1115, 60,''), {
                     fontSize: 18
-                });
+                };
+
+                if (dato == 1) {
+                    this.texto.add.text(1115, 60, 'X'+(dato+1));
+                } else {
+                    this.texto.add.text('X'+(dato+1));
+                }
+                
             }
 
         });        

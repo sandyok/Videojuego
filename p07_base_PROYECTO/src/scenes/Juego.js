@@ -22,7 +22,7 @@ class Juego extends Phaser.Scene{
          this.load.image("harper", "Harper/harper.png");
 
          // Sprite Harper Caminando
-         this.load.spritesheet("harper_walking", "Harper/walk.png", {frameWidth: 19, frameHeight: 45});
+         this.load.spritesheet("harper_walking", "Harper/correHarper.png", {frameWidth: 24, frameHeight: 43});
 
          // Bloques
          this.load.image("bloqueEnmedio", "Bloques/bloqueENMEDIO.png");
@@ -83,10 +83,10 @@ class Juego extends Phaser.Scene{
         this.harper_walking.setScale(2,2);
         this.harper_walking.setDepth(2);
         this.harper_walking.setVisible(true);
-        this.anims.create({key: 'harper_walking', repeat: -1, frameRate:8, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:3})});
+        this.anims.create({key: 'harper_walking', repeat: -1, frameRate:16, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:7})});
 
         // Harper imagen
-        //this.harper = this.physics.add.image(50,480,"harper").setOrigin(0,0).setScale(2,2);
+        //this.harper = this.physics.add.image(50,480,"harper").setOrigin(0,0).setScale(2,2)
 
         // Bloques
         this.grupo = this.physics.add.staticGroup({
@@ -131,15 +131,12 @@ class Juego extends Phaser.Scene{
             
         });
 
-        
-
-
         // Piedras 
         //this.piedraI = this.physics.add.image(300, 280, "piedra").setOrigin(0,0).setScale(0.1, 0.1);
 
         this.grupoPiedras = this.physics.add.staticGroup({
             key: 'piedra',
-                repeat: 1,
+                repeat: 2,
                 setXY: {
                         x: 320,
                         y: 560,
@@ -155,10 +152,10 @@ class Juego extends Phaser.Scene{
             piedra.setOffset(125, 125);
         } );
 
-        //var contador = ;
+        var contador = 0;
 
         this.physics.add.collider(this.grupo, this.grupoPiedras);
-        this.physics.add.collider(this.harper_walking, this.grupoPiedras, (contador) => {
+        this.physics.add.collider(this.harper_walking, this.grupoPiedras, () => {
 
             //this.piedraI.destroy();
             //this.grupoPiedras.remove(this.grupoPiedras.getChildren()[0]);
@@ -169,7 +166,7 @@ class Juego extends Phaser.Scene{
 
             this.registry.events.emit('eventoP', contador);
             this.data.list.piedras -= 1;
-            //contador = contador+1;
+            contador = contador+1;
             console.log("Hay una piedra menos disponible");
         });
 
