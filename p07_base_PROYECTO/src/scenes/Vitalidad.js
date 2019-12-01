@@ -46,7 +46,7 @@ class Vitalidad extends Phaser.Scene{
         // H A R P E R ==================================================================================================
         this.harper = this.add.image(-175, 10, 'harper')
             .setDepth(2)
-            .setScale(1.5);
+            .setScale(2.3);
         // Yoshi origen: (0.5, 0.5)
         //console.log("Yoshi Origen: (" + this.yoshi.originX + ", " + this.yoshi.originY + ")");
 

@@ -16,20 +16,22 @@ class Items extends Phaser.Scene{
 
     create() {
 
-        this.add.image(910,  20, 'bota').setScale(1.0).setOrigin(0.0, 0.0);
+        //this.add.image(910,  20, 'bota').setScale(1.0).setOrigin(0.0, 0.0);
+        //this.add.image(830, 20, 'cont_item_vacio').setScale(1.0).setOrigin(0.0, 0.0);
+        this.add.image(910, 20, 'cont_item_vacio').setScale(1.0).setOrigin(0.0, 0.0);
         this.add.image(990, 20, 'cont_item_vacio').setScale(1.0).setOrigin(0.0, 0.0);
         this.add.image(1070, 20, 'cont_item_vacio').setScale(1.0).setOrigin(0.0, 0.0);
 
         // // Crear un nuevo evento
         this.registry.events.on('eventoR', (dato) => {
             console.log('Se ha emitido el evento ', dato);
-            this.resortera = this.add.image(1015, 25, "resortera").setOrigin(0,0).setScale(0.42, 0.42).setDepth(7);
+            this.resortera = this.add.image(1013, 28, "resortera").setOrigin(0,0).setScale(0.40, 0.40).setDepth(7);
         });
 
         // // Crear un nuevo evento
         this.registry.events.on('eventoP', (dato) => {
             console.log('Se ha emitido el evento ', dato);
-            this.piedraI = this.add.image(1087, 30, "piedra").setOrigin(0,0).setScale(0.15, 0.15);
+            this.piedraI = this.add.image(1085, 30, "piedra").setOrigin(0,0).setScale(0.15, 0.15);
             //this.resortera = this.add.image(1015, 25, "resortera").setOrigin(0,0).setScale(0.42, 0.42).setDepth(7);
 
             if (dato == 0) {
@@ -37,15 +39,15 @@ class Items extends Phaser.Scene{
 
             } else {
                 
-                this.texto = this.add.text(1115, 60,''), {
+                this.texto = this.add.text(1115, 60, 'X'+(dato+1)), {
                     fontSize: 18
                 };
 
-                if (dato == 1) {
-                    this.texto.add.text(1115, 60, 'X'+(dato+1));
-                } else {
-                    this.texto.add.text('X'+(dato+1));
-                }
+                // if (dato == 1) {
+                //     this.texto.add.text(1115, 60, 'X'+(dato+1));
+                // } else {
+                //     this.texto.add.text('X'+(dato+1));
+                // }
                 
             }
 

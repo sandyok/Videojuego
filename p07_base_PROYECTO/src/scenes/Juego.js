@@ -19,7 +19,7 @@ class Juego extends Phaser.Scene{
          this.load.image("fondo_capa_4", "Bosque_Capas/bosque_capa_4.png");
 
          // Harper
-         this.load.image("harper", "Harper/harper.png");
+         this.load.image("harper", "Harper/presentacionH.png");
 
          // Sprite Harper Caminando
          this.load.spritesheet("harper_walking", "Harper/correHarper.png", {frameWidth: 24, frameHeight: 43});
@@ -136,7 +136,7 @@ class Juego extends Phaser.Scene{
 
         this.grupoPiedras = this.physics.add.staticGroup({
             key: 'piedra',
-                repeat: 2,
+                repeat: 3,
                 setXY: {
                         x: 320,
                         y: 560,
