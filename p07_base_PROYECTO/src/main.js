@@ -25,10 +25,6 @@ const config = {
                 "#e74c3c", 
                 "#000000"]
     },
-<<<<<<< HEAD
-    
-
-=======
     // Habilitar fisica
     physics: {
         default: 'arcade',
@@ -39,7 +35,6 @@ const config = {
             debug: true
         }
     },
->>>>>>> e74c6e0c75d6645e87f1d52fc3c3535e1ffbccc4
 };
 
 const game = new Phaser.Game(config);
