@@ -18,20 +18,16 @@ class Bootloader extends Phaser.Scene{
          this.load.image("menu_capa_2", "Bosque_Capas/Inicio_bosque_capa_2.png");
          this.load.image("menu_capa_3", "Bosque_Capas/Inicio_bosque_capa_3.png");
          this.load.image("menu_capa_4", "Bosque_Capas/Inicio_bosque_capa_4.png");
- 
 
          // Titulo
         this.load.image("titulo", "titulo2Willowbrook.png");
 
-         // Botones
-         this.load.image("btn_Jugar", "Botones/btn_Jugar3.png");
-         this.load.image("btn_Ajustes", "Botones/btn_Ajustes3.png");
-         this.load.image("btn_Ayuda", "Botones/btn_Ayuda3.png");
- 
-         this.load.spritesheet("firefly", "spritesheet_firefly.png",{frameWidth: 480, frameHeight: 160});
+        // Botones
+        this.load.image("btn_Jugar", "Botones/btn_Jugar3.png");
+        this.load.image("btn_Ajustes", "Botones/btn_Ajustes3.png");
+        this.load.image("btn_Ayuda", "Botones/btn_Ayuda3.png");
 
-
-         
+        this.load.spritesheet("firefly", "spritesheet_firefly.png",{frameWidth: 480, frameHeight: 160});         
     }
 
     create() {
@@ -42,58 +38,58 @@ class Bootloader extends Phaser.Scene{
         this.menu_capa_3 = this.add.image(0,0,"menu_capa_3").setOrigin(0,0).setScale(3,3).setDepth(3);
         this.menu_capa_4 = this.add.image(0,0,"menu_capa_4").setOrigin(0,0).setScale(3,3).setDepth(4);
 
-         // Animacion de las luciernágas
-         this.anims.create({key: "firefly", repeat: -1, frameRate:5, frames:this.anims.generateFrameNames("firefly",{start:0,end:16})});
-        
-         this.grupo = this.add.group();
-         this.grupo.createMultiple(
-         [
-             {             
-                 key: 'firefly',   
-                 repeat: 2,         
-                 setXY: {                 
-                     x: 150,                 
-                     y: 150,
-                     stepX: 480,        
-                 }
-             },
-             {             
-                 key: 'firefly',   
-                 repeat: 2,         
-                 setXY: {                 
-                     x: 150,                 
-                     y: 300,
-                     stepX: 480,        
-                 }
-             },
-             {             
-                 key: 'firefly',   
-                 repeat: 2,         
-                 setXY: {                 
-                     x: 150,                 
-                     y: 450,
-                     stepX: 480,        
-                 }
-             }
-         ]    
-         );
+        // Animacion de las luciernágas
+        this.anims.create({key: "firefly", repeat: -1, frameRate:5, frames:this.anims.generateFrameNames("firefly",{start:0,end:16})});
+    
+        this.grupo = this.add.group();
+        this.grupo.createMultiple(
+        [
+            {             
+                key: 'firefly',   
+                repeat: 2,         
+                setXY: {                 
+                    x: 150,                 
+                    y: 150,
+                    stepX: 480,        
+                }
+            },
+            {             
+                key: 'firefly',   
+                repeat: 2,         
+                setXY: {                 
+                    x: 150,                 
+                    y: 300,
+                    stepX: 480,        
+                }
+            },
+            {             
+                key: 'firefly',   
+                repeat: 2,         
+                setXY: {                 
+                    x: 150,                 
+                    y: 450,
+                    stepX: 480,        
+                }
+            }
+        ]    
+        );
  
-         this.grupo.playAnimation('firefly');
+        this.grupo.playAnimation('firefly');
  
-         this.grupo.children.iterate( (firefly) => {            
-             firefly.setScale(2);  
-             firefly.setDepth(3);
-             firefly.setAlpha(0.8);
-         });
-         this.grupo.children.entries[4].setScale(1.4);
-         this.grupo.children.entries[4].setDepth(1);
-         this.grupo.children.entries[6].setScale(1.8);
-         this.grupo.children.entries[6].setDepth(3);
+        this.grupo.children.iterate( (firefly) => {            
+            firefly.setScale(2);  
+            firefly.setDepth(3);
+            firefly.setAlpha(0.8);
+        });
+        this.grupo.children.entries[4].setScale(1.4);
+        this.grupo.children.entries[4].setDepth(1);
+        this.grupo.children.entries[6].setScale(1.8);
+        this.grupo.children.entries[6].setDepth(3);
 
-         // Titulo del juego
-         this.titulo = this.add.image(570, 185, 'titulo').setScale(.20, .20).setDepth(5);
+        // Titulo del juego
+        this.titulo = this.add.image(570, 185, 'titulo').setScale(.20, .20).setDepth(5);
          
-         // Contenedor de Opciones
+        // Contenedor de Opciones
         const container = this.add.container(630,350).setDepth(5);
 
         // Constante de eventos del boton
