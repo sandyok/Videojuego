@@ -27,7 +27,7 @@ class Bootloader extends Phaser.Scene{
         this.load.image("btn_Ajustes", "Botones/btn_Ajustes3.png");
         this.load.image("btn_Ayuda", "Botones/btn_Ayuda3.png");
 
-        this.load.spritesheet("firefly", "spritesheet_firefly.png",{frameWidth: 480, frameHeight: 160});         
+        this.load.spritesheet("firefly", "spritesheet_firefly.png",{frameWidth: 480, frameHeight: 160});     
     }
 
     create() {
@@ -39,7 +39,7 @@ class Bootloader extends Phaser.Scene{
         this.menu_capa_4 = this.add.image(0,0,"menu_capa_4").setOrigin(0,0).setScale(3,3).setDepth(4);
 
         // Animacion de las luciernágas
-        this.anims.create({key: "firefly", repeat: -1, frameRate:5, frames:this.anims.generateFrameNames("firefly",{start:0,end:16})});
+        this.anims.create({key: "firefly", repeat: -1, frameRate:3, frames:this.anims.generateFrameNames("firefly",{start:0,end:16})});
     
         this.grupo = this.add.group();
         this.grupo.createMultiple(

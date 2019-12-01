@@ -59,6 +59,9 @@ class Juego extends Phaser.Scene{
     }
 
     create() {
+        var cont;
+        this.cont = 0;
+
         this.fondo_0 = this.add.tileSprite(0,0,1152,2592,"fondo_capa_0");
         this.fondo_0.setOrigin(0,0);
         this.fondo_0.setScrollFactor(0);
@@ -87,13 +90,14 @@ class Juego extends Phaser.Scene{
         this.scene.launch('Vitalidad');
         this.scene.launch('Items');
 
+        
         // Harper Caminando
         this.harper_walking = this.physics.add.sprite(50, 420, "harper_walking", 0);
         this.harper_walking.setOrigin(0,0);
         this.harper_walking.setScale(2,2);
         this.harper_walking.setDepth(2);
         this.harper_walking.setVisible(true);
-        this.anims.create({key: 'harper_walking', repeat: -1, frameRate:16, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:7})});
+        this.anims.create({key: 'harper_walking', repeat: -1, frameRate:16, frames:this.anims.generateFrameNames("harper_walking",{start:1,end:7})});
 
         // Bloques
         this.grupoBloques = this.physics.add.staticGroup({
@@ -191,35 +195,15 @@ class Juego extends Phaser.Scene{
         this.cursor.right.on('down', () => {
             this.harper_walking.setFlipX(false);
             this.harper_walking.anims.play("harper_walking");
-            this.harper_walking.body.setVelocityX(200);
-        });
-
-        this.cursor.right.on('up', () => {
-            this.harper_walking.anims.stop('harper_walking');
-            this.harper_walking.setFrame(0);
-            this.harper_walking.body.setVelocityX(-800);
-            this.harper_walking.body.stop();
         });
         
         // LEFT -------------------------------------------------------------------------------------------------------------------
         this.cursor.left.on('down', () => {
             this.harper_walking.setFlipX(true);
             this.harper_walking.anims.play("harper_walking");
-            this.harper_walking.body.setVelocityX(-200);
         });
 
-        this.cursor.left.on('up', () => {
-            this.harper_walking.anims.stop('harper_walking');
-            this.harper_walking.setFrame(0);
-            this.harper_walking.body.setVelocityX(-800);
-            this.harper_walking.body.stop();
-        });
-
-        // ARRIBA
-        this.cursor.up.on('down', () => {
-            this.harper_walking.body.setVelocityY(-400);
-        });
-
+        // ARRIBA -----------------------------------------------------------------------------------------------------------------
         this.myCam = this.cameras.main;
         this.myCam.setBounds(0,0,1150*5,2592);
         this.myCam.startFollow(this.harper_walking);
@@ -237,7 +221,35 @@ class Juego extends Phaser.Scene{
         }
     }
 
+    // FUNCION para correr
+    correrHarper(){
+        if(this.cursor.right.isDown){
+            this.harper_walking.body.setVelocityX(200);
+        }else if(this.cursor.left.isDown){
+            this.harper_walking.body.setVelocityX(-200);
+        }else{
+            this.harper_walking.anims.stop("harper_walking");
+            this.harper_walking.setFrame(0);
+        }
+    }
+
+    // FUNCION para saltar
+    saltarHarper(){
+        if(this.cursor.up.isDown){
+            this.harper_walking.setVelocityY(-300);
+        }
+    }
+
     update(time, delta) {
+        // Contador para poder hacer que el jugador no se mueva al dejar de presionar las teclas
+        this.cont++;
+        if(this.cont>150){
+            this.harper_walking.body.setVelocityX(0);
+        }
+
+        this.correrHarper();
+        this.saltarHarper();
+
         // scroll the texture of the tilesprites proportionally to the camera scroll
         this.fondo_0.tilePositionX = this.myCam.scrollX * .1;
         this.fondo_1.tilePositionX = this.myCam.scrollX * .2;
@@ -250,12 +262,6 @@ class Juego extends Phaser.Scene{
         this.fondo_2.tilePositionY = this.myCam.scrollY;
         this.fondo_3.tilePositionY = this.myCam.scrollY;
         this.fondo_4.tilePositionY = this.myCam.scrollY;
-             
-        if (this.cursor.left.isUp) {
-            //this.harper_walking.anims.stop('harper_walking');
-        } else if (this.cursor.right.isUp) {
-            //this.harper_walking.anims.stop('harper_walking'); 
-        }
     }
 }
 
