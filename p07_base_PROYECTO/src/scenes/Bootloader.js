@@ -6,7 +6,7 @@ class Bootloader extends Phaser.Scene{
     }
 
     init() {
-        console.log('Escena Bootloader');
+        console.log('Scene =Bootloader= running');
     }
     
     preload() {
@@ -19,7 +19,12 @@ class Bootloader extends Phaser.Scene{
          this.load.image("menu_capa_3", "Bosque_Capas/Inicio_bosque_capa_3.png");
          this.load.image("menu_capa_4", "Bosque_Capas/Inicio_bosque_capa_4.png");
  
+<<<<<<< HEAD
         // Titulo
+=======
+
+         // Titulo
+>>>>>>> e74c6e0c75d6645e87f1d52fc3c3535e1ffbccc4
         this.load.image("titulo", "titulo2Willowbrook.png");
 
          // Botones
@@ -28,6 +33,9 @@ class Bootloader extends Phaser.Scene{
          this.load.image("btn_Ayuda", "Botones/btn_Ayuda3.png");
  
          this.load.spritesheet("firefly", "spritesheet_firefly.png",{frameWidth: 480, frameHeight: 160});
+
+
+         
     }
 
     create() {
@@ -88,8 +96,12 @@ class Bootloader extends Phaser.Scene{
 
          // Titulo del juego
          this.titulo = this.add.image(570, 185, 'titulo').setScale(.20, .20).setDepth(5);
+<<<<<<< HEAD
 
 
+=======
+         
+>>>>>>> e74c6e0c75d6645e87f1d52fc3c3535e1ffbccc4
          // Contenedor de Opciones
         const container = this.add.container(630,350).setDepth(5);
 
@@ -126,6 +138,7 @@ class Bootloader extends Phaser.Scene{
 
     iniciarJuego(){
         console.log("Iniciando Juego...");
+        this.scene.start("Juego");
     }
 
     ajustesJuego(){
