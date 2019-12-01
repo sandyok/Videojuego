@@ -27,7 +27,7 @@ class Juego extends Phaser.Scene{
         // Harper
         this.load.image("harper", "Harper/presentacionH.png");
         // Sprite Harper Caminando
-        this.load.spritesheet("harper_walking", "Harper/correHarper.png", {frameWidth: 24, frameHeight: 43});
+        this.load.spritesheet("harper_walking", "Harper/nuevoCorriendo.png", {frameWidth: 24, frameHeight: 43});
         
         // Bloques
         this.load.image("bloque", "Bloques/bloque.png");
@@ -93,7 +93,7 @@ class Juego extends Phaser.Scene{
         this.harper_walking.setScale(2,2);
         this.harper_walking.setDepth(2);
         this.harper_walking.setVisible(true);
-        this.anims.create({key: 'harper_walking', repeat: -1, frameRate:16, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:7})});
+        this.anims.create({key: 'harper_walking', repeat: -1, frameRate:16, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:12})});
 
         // Bloques
         this.grupoBloques = this.physics.add.staticGroup({
