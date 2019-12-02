@@ -18,8 +18,7 @@ class Bootloader extends Phaser.Scene{
          this.load.image("menu_capa_2", "Bosque_Capas/Inicio_bosque_capa_2.png");
          this.load.image("menu_capa_3", "Bosque_Capas/Inicio_bosque_capa_3.png");
          this.load.image("menu_capa_4", "Bosque_Capas/Inicio_bosque_capa_4.png");
-
-         // Titulo
+        // Titulo
         this.load.image("titulo", "titulo2Willowbrook.png");
 
         // Botones
@@ -76,6 +75,20 @@ class Bootloader extends Phaser.Scene{
  
         this.grupo.playAnimation('firefly');
  
+         this.grupo.children.iterate( (firefly) => {            
+             firefly.setScale(2);  
+             firefly.setDepth(3);
+             firefly.setAlpha(0.8);
+         });
+         this.grupo.children.entries[4].setScale(1.4);
+         this.grupo.children.entries[4].setDepth(1);
+         this.grupo.children.entries[6].setScale(1.8);
+         this.grupo.children.entries[6].setDepth(3);
+
+         // Titulo del juego
+         this.titulo = this.add.image(570, 185, 'titulo').setScale(.20, .20).setDepth(5);
+
+         // Contenedor de Opciones
         this.grupo.children.iterate( (firefly) => {            
             firefly.setScale(2);  
             firefly.setDepth(3);
@@ -100,7 +113,7 @@ class Bootloader extends Phaser.Scene{
         this.btn_Ajustes = this.add.image(-60, 50, "btn_Ajustes").setScale(.10,.10).setDepth(5).setInteractive();
         this.btn_Ayuda = this.add.image(-60, 120, "btn_Ayuda").setScale(.10,.10).setDepth(5).setInteractive();
 
-        console.log(container);
+        //console.log(container);
 
         container.add([
             this.btn_Jugar,

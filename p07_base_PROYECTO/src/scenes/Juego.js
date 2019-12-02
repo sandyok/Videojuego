@@ -31,6 +31,10 @@ class Juego extends Phaser.Scene{
         // Sprite Harper Saltando
         this.load.spritesheet("harper_jumping", "Harper/saltoHarper.png", {frameWidth: 24, frameHeight: 43});
         
+        // Enemigo encapuchado
+        this.load.spritesheet("encapuchado", "Enemigos/encapuchado.png", {frameWidth: 28, frameHeight: 47});
+
+
         // Bloques
         this.load.image("bloque", "Bloques/bloque.png");
         this.load.image("bloqueFloat", "Bloques/bloqueFlotante.png");
@@ -59,7 +63,9 @@ class Juego extends Phaser.Scene{
 
         // Contenedor (Escena Vitalidad)
         this.load.image("contenedor", "Vitalidad/contenedor.png");
-        this.load.image('barraVitalidad', "Vitalidad/barraVitalidad.png");
+        //this.load.image('barraVitalidad', "Vitalidad/barraVitalidad.png");
+        this.load.image('barrita', "Vitalidad/barrita.png");
+        this.load.image('cuadro', "Vitalidad/cuadro.png");
         this.load.image('harper', "Vitalidad/harper.png");
         this.load.image('cocoro', "Vitalidad/cocoro.png");
         
@@ -111,7 +117,6 @@ class Juego extends Phaser.Scene{
         this.anims.create({key: 'harper_walking', repeat: -1, frameRate:17, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:12})});
 
         //this.harper_walking.body.setGravityY(300);
-
         // Harper Saltando
         this.harper_jumping = this.physics.add.sprite(50,420, "harper_jumping",0);
         this.harper_jumping.setOrigin(0,0);
@@ -121,7 +126,16 @@ class Juego extends Phaser.Scene{
         this.anims.create({key: 'harper_jumping', repeat: -1, frameRate:8, frames:this.anims.generateFrameNames("harper_jumping",{start:0,end:6})});
 
         //this.harper_jumping.body.setGravityY(300);
-    
+
+        // Encapuchado caminando
+        this.encapuchado = this.physics.add.sprite(400, 820, "encapuchado", 0);
+        this.encapuchado.setOrigin(0,0);
+        this.encapuchado.setScale(2,2);
+        this.encapuchado.setDepth(2);
+        this.encapuchado.setVisible(true);
+        this.anims.create({key: 'encapuchado', repeat: -1, frameRate:6, frames:this.anims.generateFrameNames("encapuchado",{start:0,end:2})});
+        this.encapuchado.anims.play("encapuchado");
+
         // Bloques
         this.grupoBloques = this.physics.add.staticGroup({
             key: 'bloque',
@@ -142,6 +156,7 @@ class Juego extends Phaser.Scene{
 
         this.physics.add.collider(this.harper_walking,this.grupoBloques);
         this.physics.add.collider(this.harper_jumping,this.grupoBloques);
+        this.physics.add.collider(this.encapuchado,this.grupoBloques);
 
         // Bloques flotantes
         this.grupoBloquesFloat = this.physics.add.staticGroup({
@@ -300,7 +315,6 @@ class Juego extends Phaser.Scene{
         this.cursor.left.on('down', () => {
             this.harper_walking.setFlipX(true);
             this.harper_walking.anims.play("harper_walking");
-
             this.harper_jumping.setFlipX(true);
         });
 
@@ -331,8 +345,10 @@ class Juego extends Phaser.Scene{
         fruta.disableBody(true,true);
         if(fruta.name == "good"){
             // AQUI IRIA LO DE EL AUMENTO EN LA BARRA DE VIDA
+            this.registry.events.emit('eventoVitalidad', true);
         }else{
             // CASO CONTRARIO
+            this.registry.events.emit('eventoVitalidad', false);
         }
     }
 
@@ -347,7 +363,6 @@ class Juego extends Phaser.Scene{
     correrHarper(){
         if(this.cursor.right.isDown){
             this.harper_walking.body.setVelocityX(200);
-
             this.harper_jumping.body.setVelocityX(200);
         }else if(this.cursor.left.isDown){
             this.harper_walking.body.setVelocityX(-200);
@@ -365,6 +380,11 @@ class Juego extends Phaser.Scene{
             this.harper_walking.body.velocity.y=-560;
             this.harper_jumping.body.velocity.y=-560;
         }
+    }
+
+    // FUNCTION para que el encapuchado camine encapuchadamente gg
+    caminaEncapuchado (){
+        
     }
 
     update(time, delta) {
@@ -390,6 +410,41 @@ class Juego extends Phaser.Scene{
         this.fondo_2.tilePositionY = this.myCam.scrollY;
         this.fondo_3.tilePositionY = this.myCam.scrollY;
         this.fondo_4.tilePositionY = this.myCam.scrollY;
+
+        // Control de movimiento del encapuchado
+        var auxMovement = Number;
+        auxMovement = this.encapuchado.x;
+
+
+        if ( this.encapuchado.flipX == false ){
+            
+            auxMovement -= (1.2/delta)+1;
+            
+            if (auxMovement > 420 ) {
+                this.encapuchado.setX(auxMovement);
+                //console.log("----" + (1.5/delta));                
+            }
+            else {
+                this.encapuchado.setFlipX(true);
+            }            
+        } 
+        else {
+
+            auxMovement += (1.2/delta)+1;
+            if (auxMovement < 500 ) {
+
+                this.encapuchado.setX(auxMovement);
+                //console.log("-----------------> " + (1.5/delta));                
+            }
+            else {
+                this.encapuchado.setFlipX(false);
+            }
+
+            
+        }
+        //console.log(auxMovement);
+
+
     }
 }
 

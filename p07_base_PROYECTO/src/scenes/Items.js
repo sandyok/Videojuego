@@ -12,7 +12,12 @@ class Items extends Phaser.Scene{
     
     preload() {
 
+        //this.load.text();
+
     }
+
+
+    
 
     create() {
 
@@ -21,14 +26,22 @@ class Items extends Phaser.Scene{
         this.add.image(910, 20, 'cont_item_vacio').setScale(1.0).setOrigin(0.0, 0.0);
         this.add.image(990, 20, 'cont_item_vacio').setScale(1.0).setOrigin(0.0, 0.0);
         this.add.image(1070, 20, 'cont_item_vacio').setScale(1.0).setOrigin(0.0, 0.0);
-
-        // // Crear un nuevo evento
+        
+        
+        // // Evento Resortera
         this.registry.events.on('eventoR', (dato) => {
             console.log('Se ha emitido el evento ', dato);
             this.resortera = this.add.image(1013, 28, "resortera").setOrigin(0,0).setScale(0.40, 0.40).setDepth(7);
         });
 
-        // // Crear un nuevo evento
+
+        // // Texto
+        var text = '';
+        text = this.make.text(100, 100, "phaser", { font: "bold 40px Arial", fill: "#000000" });
+        //text.set (0.5);
+
+
+        // // Evento Piedras
         this.registry.events.on('eventoP', (dato) => {
             console.log('Se ha emitido el evento ', dato);
             this.piedraI = this.add.image(1085, 30, "piedra").setOrigin(0,0).setScale(0.15, 0.15);
