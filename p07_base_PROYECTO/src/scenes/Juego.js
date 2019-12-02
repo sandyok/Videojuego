@@ -28,9 +28,17 @@ class Juego extends Phaser.Scene{
         this.load.image("harper", "Harper/presentacionH.png");
         // Sprite Harper Caminando
         this.load.spritesheet("harper_walking", "Harper/nuevoCorriendo.png", {frameWidth: 24, frameHeight: 43});
+        // Sprite Harper Saltando
+        this.load.spritesheet("harper_jumping", "Harper/saltoHarper.png", {frameWidth: 24, frameHeight: 43});
         
         // Bloques
         this.load.image("bloque", "Bloques/bloque.png");
+        this.load.image("bloqueFloat", "Bloques/bloqueFlotante.png");
+        this.load.image("bloqueNormal", "Bloques/bloqueNormal.png");
+        this.load.image("bloqueFusion", "Bloques/bloqueFusion.png");
+
+        /* OBSTACULOS */
+        this.load.image("tronco", "Objetos/tronco.png");
 
         /* ITEMS VITALIDAD */
         // Frutas
@@ -38,6 +46,9 @@ class Juego extends Phaser.Scene{
         this.load.image("manzana", "Frutas/manzana.png");
         this.load.image("naranja", "Frutas/naranja.png");
         this.load.image("frutaAlgo", "Frutas/algo.png");
+
+        // Cofre con objetos
+        this.load.spritesheet("cofre", "Objetos/sprite_cofre.png", {frameWidth: 26, frameHeight: 19});
 
         /* ITEMS DEFENSA */
         // Resortera
@@ -97,17 +108,29 @@ class Juego extends Phaser.Scene{
         this.harper_walking.setScale(2,2);
         this.harper_walking.setDepth(2);
         this.harper_walking.setVisible(true);
-        this.anims.create({key: 'harper_walking', repeat: -1, frameRate:16, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:12})});
+        this.anims.create({key: 'harper_walking', repeat: -1, frameRate:17, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:12})});
 
+        //this.harper_walking.body.setGravityY(300);
+
+        // Harper Saltando
+        this.harper_jumping = this.physics.add.sprite(50,420, "harper_jumping",0);
+        this.harper_jumping.setOrigin(0,0);
+        this.harper_jumping.setScale(2,2);
+        this.harper_jumping.setDepth(2);
+        this.harper_jumping.setVisible(false);
+        this.anims.create({key: 'harper_jumping', repeat: -1, frameRate:8, frames:this.anims.generateFrameNames("harper_jumping",{start:0,end:6})});
+
+        //this.harper_jumping.body.setGravityY(300);
+    
         // Bloques
         this.grupoBloques = this.physics.add.staticGroup({
             key: 'bloque',
-                repeat: 23,
-                setXY: {
-                    x: 126,
-                    y: 1250,
-                    stepX: 244
-                }
+            repeat: 23,
+            setXY: {
+                x: 126,
+                y: 1250,
+                stepX: 244
+            }
         });
 
         this.grupoBloques.children.iterate( (bloque) => {
@@ -118,11 +141,75 @@ class Juego extends Phaser.Scene{
         } );
 
         this.physics.add.collider(this.harper_walking,this.grupoBloques);
+        this.physics.add.collider(this.harper_jumping,this.grupoBloques);
+
+        // Bloques flotantes
+        this.grupoBloquesFloat = this.physics.add.staticGroup({
+            key: 'bloqueFloat',
+            repeat: 2,
+            setXY: {
+                x: 500,
+                y: 1050,
+                stepX: 900
+            }
+        });
+
+        this.grupoBloquesFloat.children.iterate((bloqueFloat) => {
+            bloqueFloat.setScale(2);
+            bloqueFloat.setOffset(-28,-2);
+            bloqueFloat.setSize(100,35);
+        });
+
+        this.physics.add.collider(this.harper_walking,this.grupoBloquesFloat);
+        this.physics.add.collider(this.harper_jumping,this.grupoBloquesFloat);
+
+        // Bloques Fusion
+        this.grupoBloquesFusion = this.physics.add.staticGroup({
+            key: 'bloqueFusion',
+            repeat: 23,
+            setXY: {
+                x: 126,
+                y: 1368,
+                stepX: 244
+            }
+        });
+
+        this.grupoBloquesFusion.children.iterate( (bloqueFusion) => {
+            bloqueFusion.setScale(5);
+            // Cambiamos el tamano del colisionador 
+            bloqueFusion.setOffset(-100, -28);
+            bloqueFusion.setSize(244,118);
+        } );
+
+        this.physics.add.collider(this.harper_walking,this.grupoBloquesFusion);
+        this.physics.add.collider(this.harper_jumping,this.grupoBloquesFusion);
+
 
         // Declarar set
         this.data.set('resorteras', 3);
         this.data.set('piedras', 5);
         console.log(this.data.list);
+
+        /* OBSTACULOS ----------------------------------------------------------------------------------------------------------- */
+        this.grupoTroncos= this.physics.add.staticGroup({
+            key: 'tronco',
+            repeat: 23,
+            setXY: {
+                x: 126,
+                y: 1175,
+                stepX: 244
+            }
+        });
+
+        this.grupoTroncos.children.iterate( (tronco) => {
+            tronco.setScale(.2);
+            // Cambiamos el tamano del colisionador 
+            tronco.setOffset(-75, 186);
+            tronco.setSize(30,30);
+        } );
+
+        this.physics.add.collider(this.harper_walking,this.grupoTroncos);
+        this.physics.add.collider(this.harper_jumping,this.grupoTroncos);
 
         /* ITEMS VITALIDAD ------------------------------------------------------------------------------------------------------ */
         // Frutas
@@ -174,7 +261,7 @@ class Juego extends Phaser.Scene{
             // Cambiamos el tamano del colisionador
             piedra.setSize(20, 25);
             piedra.setOffset(125, 125);
-        } );
+        });
 
         var contador = 0;
 
@@ -188,6 +275,16 @@ class Juego extends Phaser.Scene{
             console.log("Hay una piedra menos disponible");
         });
 
+        //Cofre
+        this.cofre = this.physics.add.staticSprite(100,1160,"cofre",0);
+        this.cofre.setOrigin(0,0);
+        this.cofre.setScale(2.4);
+        this.cofre.setSize(53,38);
+        this.cofre.setOffset(14,18);
+
+        this.physics.add.collider(this.cofre,this.grupoBloques);
+        this.physics.add.overlap(this.harper_jumping,this.cofre,this.collectCofre,null,this);
+
         // C U R S O R E S --------------------------------------------------------------------------------------------------------
         this.cursor = this.input.keyboard.createCursorKeys();
 
@@ -195,18 +292,36 @@ class Juego extends Phaser.Scene{
         this.cursor.right.on('down', () => {
             this.harper_walking.setFlipX(false);
             this.harper_walking.anims.play("harper_walking");
+
+            this.harper_jumping.setFlipX(false);
         });
         
         // LEFT -------------------------------------------------------------------------------------------------------------------
         this.cursor.left.on('down', () => {
             this.harper_walking.setFlipX(true);
             this.harper_walking.anims.play("harper_walking");
+
+            this.harper_jumping.setFlipX(true);
         });
 
         // ARRIBA -----------------------------------------------------------------------------------------------------------------
+        this.cursor.up.on('down', () => {
+            this.harper_jumping.setVisible(true);
+            this.harper_jumping.anims.play("harper_jumping");
+            this.harper_walking.setVisible(false);
+        });
+
+        this.cursor.up.on('up', () => {
+            this.harper_jumping.setVisible(false);
+            this.harper_jumping.anims.stop("harper_jumping");
+            this.harper_jumping.setFrame(0);
+            this.harper_walking.setVisible(true);
+        });
+        
         this.myCam = this.cameras.main;
         this.myCam.setBounds(0,0,1150*5,2592);
         this.myCam.startFollow(this.harper_walking);
+        this.myCam.startFollow(this.harper_jumping);  
 
         // this.grupo.getChildren()[0].setSize();
     }
@@ -221,12 +336,23 @@ class Juego extends Phaser.Scene{
         }
     }
 
+    // Obtener cosas del cofre PENDIENTE
+    collectCofre(harper,cofre){
+        if((harper.y + harper.body.height * 0.5 < cofre.y) && harper.body.velocity.y > 0 ){
+            this.cofre.setFrame(1);
+        }
+    }
+
     // FUNCION para correr
     correrHarper(){
         if(this.cursor.right.isDown){
             this.harper_walking.body.setVelocityX(200);
+
+            this.harper_jumping.body.setVelocityX(200);
         }else if(this.cursor.left.isDown){
             this.harper_walking.body.setVelocityX(-200);
+
+            this.harper_jumping.body.setVelocityX(-200);
         }else{
             this.harper_walking.anims.stop("harper_walking");
             this.harper_walking.setFrame(0);
@@ -235,8 +361,9 @@ class Juego extends Phaser.Scene{
 
     // FUNCION para saltar
     saltarHarper(){
-        if(this.cursor.up.isDown){
-            this.harper_walking.setVelocityY(-300);
+        if(this.cursor.up.isDown && (this.harper_jumping.body.onFloor() || this.harper_jumping.body.touching.down)){
+            this.harper_walking.body.velocity.y=-560;
+            this.harper_jumping.body.velocity.y=-560;
         }
     }
 
@@ -245,6 +372,7 @@ class Juego extends Phaser.Scene{
         this.cont++;
         if(this.cont>150){
             this.harper_walking.body.setVelocityX(0);
+            this.harper_jumping.body.setVelocityX(0);
         }
 
         this.correrHarper();
