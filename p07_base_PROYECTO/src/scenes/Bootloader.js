@@ -113,7 +113,7 @@ class Bootloader extends Phaser.Scene{
         this.btn_Ajustes = this.add.image(-60, 50, "btn_Ajustes").setScale(.10,.10).setDepth(5).setInteractive();
         this.btn_Ayuda = this.add.image(-60, 120, "btn_Ayuda").setScale(.10,.10).setDepth(5).setInteractive();
 
-        console.log(container);
+        //console.log(container);
 
         container.add([
             this.btn_Jugar,

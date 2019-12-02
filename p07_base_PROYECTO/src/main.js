@@ -32,7 +32,7 @@ const config = {
             gravity: {
                 y: 800
             },
-            debug: true
+            //debug: true
         }
     },
 };

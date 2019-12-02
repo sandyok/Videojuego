@@ -23,11 +23,13 @@ class Juego extends Phaser.Scene{
         // Musica
         this.load.audio("audio_fondo", "Sonidos/elBosqueTenebroso.mp3")
 
-        /* PERSONAJES */
-        // Harper
-        this.load.image("harper", "Harper/presentacionH.png");
-        // Sprite Harper Caminando
-        this.load.spritesheet("harper_walking", "Harper/nuevoCorriendo.png", {frameWidth: 24, frameHeight: 43});
+        /* PERSONAJES  ==================== */
+            // Harper
+            this.load.image("harper", "Harper/presentacionH.png");
+            // Sprite Harper Caminando
+            this.load.spritesheet("harper_walking", "Harper/nuevoCorriendo.png", {frameWidth: 24, frameHeight: 43});
+            // Sprite Harper Saltando
+            this.load.spritesheet("harper_jumping", "Harper/saltoHarper.png", {frameWidth: 24, frameHeight: 43});
         
         // Bloques
         this.load.image("bloque", "Bloques/bloque.png");
@@ -48,7 +50,9 @@ class Juego extends Phaser.Scene{
 
         // Contenedor (Escena Vitalidad)
         this.load.image("contenedor", "Vitalidad/contenedor.png");
-        this.load.image('barraVitalidad', "Vitalidad/barraVitalidad.png");
+        //this.load.image('barraVitalidad', "Vitalidad/barraVitalidad.png");
+        this.load.image('barrita', "Vitalidad/barrita.png");
+        this.load.image('cuadro', "Vitalidad/cuadro.png");
         this.load.image('harper', "Vitalidad/harper.png");
         this.load.image('cocoro', "Vitalidad/cocoro.png");
         
@@ -99,6 +103,15 @@ class Juego extends Phaser.Scene{
         this.harper_walking.setVisible(true);
         this.anims.create({key: 'harper_walking', repeat: -1, frameRate:16, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:12})});
 
+        // Harper saltando
+        this.harper_jumping = this.physics.add.sprite(50, 420, "harper_jumping", 0);
+        this.harper_jumping.setOrigin(0,0);
+        this.harper_jumping.setScale(2,2);
+        this.harper_jumping.setDepth(2);
+        this.harper_jumping.setVisible(true);
+        this.anims.create({key: 'harper_jumping', repeat: 0, frameRate:11, frames:this.anims.generateFrameNames("harper_jumping",{start:0,end:6})});
+
+
         // Bloques
         this.grupoBloques = this.physics.add.staticGroup({
             key: 'bloque',
@@ -118,6 +131,7 @@ class Juego extends Phaser.Scene{
         } );
 
         this.physics.add.collider(this.harper_walking,this.grupoBloques);
+        this.physics.add.collider(this.harper_jumping,this.grupoBloques);
 
         // Declarar set
         this.data.set('resorteras', 3);
@@ -201,6 +215,7 @@ class Juego extends Phaser.Scene{
         this.cursor.left.on('down', () => {
             this.harper_walking.setFlipX(true);
             this.harper_walking.anims.play("harper_walking");
+            
         });
 
         // ARRIBA -----------------------------------------------------------------------------------------------------------------
@@ -216,27 +231,50 @@ class Juego extends Phaser.Scene{
         fruta.disableBody(true,true);
         if(fruta.name == "good"){
             // AQUI IRIA LO DE EL AUMENTO EN LA BARRA DE VIDA
+            this.registry.events.emit('eventoVitalidad', true);
         }else{
             // CASO CONTRARIO
+            this.registry.events.emit('eventoVitalidad', false);
         }
     }
 
     // FUNCION para correr
     correrHarper(){
         if(this.cursor.right.isDown){
+            this.harper_walking.setVisible(true);
+            this.harper_jumping.setVisible(false);
             this.harper_walking.body.setVelocityX(200);
-        }else if(this.cursor.left.isDown){
-            this.harper_walking.body.setVelocityX(-200);
-        }else{
-            this.harper_walking.anims.stop("harper_walking");
-            this.harper_walking.setFrame(0);
+            this.harper_jumping.body.setVelocityX(200);
+
+        }else 
+            if(this.cursor.left.isDown){
+                this.harper_walking.setVisible(true);
+                this.harper_jumping.setVisible(false);
+                this.harper_walking.body.setVelocityX(-200);
+                this.harper_jumping.body.setVelocityX(-200);
+            } else{
+                this.harper_walking.anims.stop("harper_walking");
+                this.harper_walking.setFrame(0);
+                //this.harper_jumping.anims.stop("harper_jumping");
+                //this.harper_jumping.setFrame(0);
         }
     }
 
     // FUNCION para saltar
     saltarHarper(){
         if(this.cursor.up.isDown){
+            
+            this.harper_walking.setVisible(false);
+            this.harper_jumping.setVisible(true);
             this.harper_walking.setVelocityY(-300);
+            this.harper_jumping.setVelocityY(-300);
+            
+            this.harper_jumping.anims.play("harper_jumping");
+        }
+        if(this.cursor.up.isUp){
+            
+            this.harper_walking.setVisible(true);
+            this.harper_jumping.setVisible(false);
         }
     }
 
@@ -245,6 +283,7 @@ class Juego extends Phaser.Scene{
         this.cont++;
         if(this.cont>150){
             this.harper_walking.body.setVelocityX(0);
+            this.harper_jumping.body.setVelocityX(0);
         }
 
         this.correrHarper();
