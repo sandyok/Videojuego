@@ -7,7 +7,11 @@ class Juego extends Phaser.Scene{
 
     init() {
         console.log('Scene =Juego= running');
+        
+        
+
     }
+
     
     preload() {
         this.load.path = './assets/';
@@ -32,7 +36,7 @@ class Juego extends Phaser.Scene{
         this.load.spritesheet("harper_jumping", "Harper/saltoHarper.png", {frameWidth: 24, frameHeight: 43});
         
         // Enemigo encapuchado
-        this.load.spritesheet("encapuchado", "Enemigos/encapuchado.png", {frameWidth: 28, frameHeight: 47});
+        this.load.spritesheet("encapuchado", "Enemigos/encapuchado.png", {frameWidth: 30, frameHeight: 47});
 
 
         // Bloques
@@ -73,9 +77,15 @@ class Juego extends Phaser.Scene{
         this.load.image('bota', "Cont_Items/bota.png");
         this.load.image('cont_item_vacio', "Cont_Items/cont_item_vacio.png");
         this.load.image('cont_item_btn', "Cont_Items/cont_item_btn.png");
+
+
+        
     }
 
+    
+
     create() {
+
         var cont;
         this.cont = 0;
 
@@ -107,7 +117,6 @@ class Juego extends Phaser.Scene{
         this.scene.launch('Vitalidad');
         this.scene.launch('Items');
 
-        
         // Harper Caminando
         this.harper_walking = this.physics.add.sprite(50, 420, "harper_walking", 0);
         this.harper_walking.setOrigin(0,0);
@@ -115,8 +124,8 @@ class Juego extends Phaser.Scene{
         this.harper_walking.setDepth(2);
         this.harper_walking.setVisible(true);
         this.anims.create({key: 'harper_walking', repeat: -1, frameRate:17, frames:this.anims.generateFrameNames("harper_walking",{start:0,end:12})});
-
         //this.harper_walking.body.setGravityY(300);
+        
         // Harper Saltando
         this.harper_jumping = this.physics.add.sprite(50,420, "harper_jumping",0);
         this.harper_jumping.setOrigin(0,0);
@@ -124,7 +133,6 @@ class Juego extends Phaser.Scene{
         this.harper_jumping.setDepth(2);
         this.harper_jumping.setVisible(false);
         this.anims.create({key: 'harper_jumping', repeat: -1, frameRate:8, frames:this.anims.generateFrameNames("harper_jumping",{start:0,end:6})});
-
         //this.harper_jumping.body.setGravityY(300);
 
         // Encapuchado caminando
@@ -204,6 +212,70 @@ class Juego extends Phaser.Scene{
         this.data.set('resorteras', 3);
         this.data.set('piedras', 5);
         console.log(this.data.list);
+
+
+        // // SHOOOTINGGGGG !! =================================================================================================================
+
+        // Shooting
+        var bullets;
+        var ship;
+        var speed;
+        var stats;
+        var cursors;
+        var lastFired = Number;
+        lastFired = 0;
+        
+
+        var Bullet = new Phaser.Class({
+
+            Extends: Phaser.GameObjects.Image,
+    
+            initialize:
+    
+            function Bullet (scene)
+            {
+                Phaser.GameObjects.Image.call(this, scene, 10, 0, 'piedra');
+    
+                this.speed = Phaser.Math.GetSpeed(400, 1);
+                this.setScale(0.1);
+            },
+    
+            fire: function (x, y)
+            {
+                this.setPosition(x, y - 50);
+    
+                this.setActive(true);
+                this.setVisible(true);
+            },
+    
+            update: function (time, delta)
+            {
+                this.y -= this.speed * delta;
+    
+                if (this.y < -50)
+                {
+                    this.setActive(false);
+                    this.setVisible(false);
+                }
+            }
+    
+        });
+    
+        this.bullets = this.add.group({
+            classType: Bullet,
+            maxSize: 10,
+            runChildUpdate: true
+        });
+    
+        //this.ship = this.add.sprite(400, 1100, 'harper').setDepth(1).setVisible(false);
+    
+        this.ship = this.harper_walking;
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+    
+        this.speed = Phaser.Math.GetSpeed(300, 1);
+
+
 
         /* OBSTACULOS ----------------------------------------------------------------------------------------------------------- */
         this.grupoTroncos= this.physics.add.staticGroup({
@@ -338,6 +410,9 @@ class Juego extends Phaser.Scene{
         this.myCam.startFollow(this.harper_jumping);  
 
         // this.grupo.getChildren()[0].setSize();
+        this.cursor.space.on('down', () => {
+        });
+
     }
 
     // FUNCION para recolectar la FRUTA
@@ -364,10 +439,13 @@ class Juego extends Phaser.Scene{
         if(this.cursor.right.isDown){
             this.harper_walking.body.setVelocityX(200);
             this.harper_jumping.body.setVelocityX(200);
+
+            //this.harper_walking.x
         }else if(this.cursor.left.isDown){
             this.harper_walking.body.setVelocityX(-200);
-
             this.harper_jumping.body.setVelocityX(-200);
+
+
         }else{
             this.harper_walking.anims.stop("harper_walking");
             this.harper_walking.setFrame(0);
@@ -387,7 +465,21 @@ class Juego extends Phaser.Scene{
         
     }
 
+
+    lanzaPiedra () {
+     
+        
+        
+    }
+
+        
+
+    
+
     update(time, delta) {
+
+        //console.log("Elemento:" + this.lastFired);
+        
         // Contador para poder hacer que el jugador no se mueva al dejar de presionar las teclas
         this.cont++;
         if(this.cont>150){
@@ -415,14 +507,11 @@ class Juego extends Phaser.Scene{
         var auxMovement = Number;
         auxMovement = this.encapuchado.x;
 
-
         if ( this.encapuchado.flipX == false ){
             
             auxMovement -= (1.2/delta)+1;
-            
             if (auxMovement > 420 ) {
-                this.encapuchado.setX(auxMovement);
-                //console.log("----" + (1.5/delta));                
+                this.encapuchado.setX(auxMovement);          
             }
             else {
                 this.encapuchado.setFlipX(true);
@@ -432,17 +521,32 @@ class Juego extends Phaser.Scene{
 
             auxMovement += (1.2/delta)+1;
             if (auxMovement < 500 ) {
-
-                this.encapuchado.setX(auxMovement);
-                //console.log("-----------------> " + (1.5/delta));                
+                this.encapuchado.setX(auxMovement);          
             }
             else {
                 this.encapuchado.setFlipX(false);
             }
-
-            
         }
-        //console.log(auxMovement);
+
+        // Disparar piedra
+        if (this.cursors.left.isDown) {
+            //this.ship.x -= this.speed * delta;
+        }
+        else if (this.cursors.right.isDown) {
+            //this.ship.x += this.speed * delta;
+        }
+        //console.log(time + "" + this.lastFired);
+        if ((this.cursors.space.isDown)) {
+
+            // console.log("OK");
+            var bullet = this.bullets.get();
+
+            if (bullet) {
+
+                bullet.fire(this.ship.x, this.ship.y);
+                this.lastFired += 50;
+            }
+        }
 
 
     }
