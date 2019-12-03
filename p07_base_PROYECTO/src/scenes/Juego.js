@@ -79,6 +79,15 @@ class Juego extends Phaser.Scene{
         this.load.image('cont_item_vacio', "Cont_Items/cont_item_vacio.png");
         this.load.image('cont_item_btn', "Cont_Items/cont_item_btn.png");
 
+        // ANIMALES
+
+        // Serpiente
+        this.load.spritesheet("serpiente", "Animales/serpiente.png", {frameWidth: 14, frameHeight: 11 });
+        // Mariposa
+        this.load.spritesheet("mariposabb", "Animales/mariposa.png", {frameWidth: 28, frameHeight: 23 });
+        // Lobo
+        this.load.spritesheet("loboA", "Animales/loboA.png", {frameWidth: 103, frameHeight: 51});
+        // 
 
         
     }
@@ -145,6 +154,37 @@ class Juego extends Phaser.Scene{
         this.anims.create({key: 'encapuchado', repeat: -1, frameRate:6, frames:this.anims.generateFrameNames("encapuchado",{start:0,end:2})});
         this.encapuchado.anims.play("encapuchado");
 
+        // Animalitos
+
+        // Serpiente
+        this.serpiente = this.physics.add.sprite(2400, 820, "serpiente", 0);
+        this.serpiente.setOrigin(0,0);
+        this.serpiente.setScale(4.5);
+        this.serpiente.setDepth(2);
+        this.serpiente.setVisible(true);
+        this.anims.create({key: 'serpiente', repeat: -1, frameRate:6, frames:this.anims.generateFrameNames("serpiente",{start:0,end:9})});
+        this.serpiente.anims.play("serpiente");
+        this.serpiente.body.setCollideWorldBounds = true;
+        //this.serpiente.body.in
+
+        // Mariposabb
+        this.mariposabb = this.physics.add.sprite(2900, 780, "mariposabb", 0);
+        this.mariposabb.setOrigin(0,0);
+        this.mariposabb.setScale(0.5);
+        this.mariposabb.setDepth(2);
+        this.mariposabb.setVisible(true);
+        this.anims.create({key: 'mariposabb', repeat: -1, frameRate:6, frames:this.anims.generateFrameNames("mariposabb",{start:0,end:7})});
+        this.mariposabb.anims.play("mariposabb");
+
+        // Lobo
+        this.loboA = this.physics.add.sprite(4900, 820, "loboA", 0);
+        this.loboA.setOrigin(0,0);
+        //this.loboA.setScale(1);
+        this.loboA.setDepth(2);
+        this.loboA.setVisible(true);
+        this.anims.create({key: 'loboA', repeat: -1, frameRate:6, frames:this.anims.generateFrameNames("loboA",{start:0,end:5})});
+        this.loboA.anims.play("loboA");
+
         // Bloques
         this.grupoBloques = this.physics.add.staticGroup({
             key: 'bloque',
@@ -166,6 +206,32 @@ class Juego extends Phaser.Scene{
         this.physics.add.collider(this.harper_walking,this.grupoBloques);
         this.physics.add.collider(this.harper_jumping,this.grupoBloques);
         //this.physics.add.collider(this.encapuchado,this.grupoBloques);
+        this.physics.add.collider(this.serpiente, this.grupoBloques);
+        this.physics.add.collider(this.loboA, this.grupoBloques);
+
+
+        // Danios por animales
+        this.physics.add.overlap(this.harper_walking, this.serpiente, () => {
+            this.registry.events.emit('eventoVitalidad', false);
+            //this.serpiente. // .disableBody(true, false);
+            //console.log("!!!");
+        }); 
+        
+        this.physics.add.overlap(this.harper_walking, this.loboA, () => {
+            this.registry.events.emit('eventoVitalidad', false);
+        }); 
+
+        // // // this.piedraL = this.physics.add.image(this.harper_jumping.x, this.harper_jumping.y, "piedra");
+
+        // // // // Danios de rocas a animales
+        // // // this.physics.add.collider(this.piedraL, this.serpiente);
+        // // // this.physics.add.collider(this.piedraL, this.loboA);
+        
+        // // // this.physics.add.collider(this.piedraL, this.serpiente, () => {
+        // // //     console.log("Golpeaste una serpiente!");
+        // // // }); 
+
+
 
         // Bloques Flotantes Pequeños
         this.grupoBloquesFloat = this.physics.add.staticGroup();
@@ -264,8 +330,8 @@ class Juego extends Phaser.Scene{
             this.grupoBloquesFusion.children.entries[13].destroy();
         }
 
-        console.log(this.grupoBloques.children.entries);
-        console.log(this.grupoBloquesFusion.children.entries);
+        //console.log(this.grupoBloques.children.entries);
+        //console.log(this.grupoBloquesFusion.children.entries);
 
         /* ANIMALES ------------------------------------------------------------------------------------------------------------- */
     
@@ -274,10 +340,6 @@ class Juego extends Phaser.Scene{
         this.data.set('resorteras', 3);
         this.data.set('piedras', 5);
         console.log(this.data.list);
-
-
-        
-
 
 
         /* OBSTACULOS ----------------------------------------------------------------------------------------------------------- */
@@ -334,6 +396,7 @@ class Juego extends Phaser.Scene{
         
         this.physics.add.collider(this.grupoBloques, this.resortera); 
         this.physics.add.overlap(this.harper_walking, this.resortera, () => {
+            //console.log("??");
             this.resortera.destroy();
             this.registry.events.emit('eventoR', true);
 
@@ -422,6 +485,7 @@ class Juego extends Phaser.Scene{
 
         // this.grupo.getChildren()[0].setSize();
         
+        // BARRA =========================================================================================================
         this.cursor.space.on('down', () => {
             var aux = Number;
             aux = this.lanzaPiedra(contador);
@@ -429,7 +493,12 @@ class Juego extends Phaser.Scene{
                 contador = aux;
             else
                 contador = 0;
-            
+        });
+
+
+        // FINAL =========================================================================================================
+        this.cursor.shift.on('down', () => {
+            this.escenaFinal();
         });
 
 
@@ -580,22 +649,17 @@ class Juego extends Phaser.Scene{
             else
                 this.piedraL.body.velocity.x = -800;    
 
-            return datoContador -1;
-            
+            return datoContador -1;   
         }
         else {
             console.log("Ya no tienes mas piedas!");
-        }
-
-       
-
-        
+        }   
     }
 
-        
-
+    escenaFinal(){
+        this.harper_walking.body.setVelocityX(100);    
+    }
     
-
     update(time, delta) {
 
         //console.log("Elemento:" + this.lastFired);
@@ -635,8 +699,8 @@ class Juego extends Phaser.Scene{
             }
             else {
                 this.encapuchado.setFlipX(true);
-            }            
-        } 
+            }
+        }
         else {
             auxMovement += (1.2/delta)+1;
             if (auxMovement < 500 ) {
@@ -647,6 +711,16 @@ class Juego extends Phaser.Scene{
             }
         }
         //console.log(auxMovement);
+
+        // =================
+        // console.log(this.harper_walking.y);
+
+
+        if( (this.harper_walking.y >= 3000) || (this.harper_jumping.y >= 3000) ){
+            //console.log("Reinicio!")
+            this.scene.start('Juego');
+        }
+
     }
 }
 
