@@ -31,10 +31,10 @@ class Vitalidad extends Phaser.Scene{
 
         // V I T A L I D A D  =======================================================================================
         
-        this.cuadro = this.add.image(-31, 4, 'cuadro');
+        this.cuadro = this.add.image(-31, 10, 'cuadro');
         this.cuadro.setScale(2);
 
-        this.barrita = this.add.image(-145, -6, 'barrita');
+        this.barrita = this.add.image(-145, 0, 'barrita');
         this.barrita.setOrigin(0.0, 0.0);
         this.barrita.setScale(1, 2);
 
@@ -47,21 +47,21 @@ class Vitalidad extends Phaser.Scene{
         // H A R P E R ==================================================================================================
         this.harper = this.add.image(-168, 9, 'harper').setDepth(2).setScale(1.4);
 
-        // C O C O R O  ==================================================================================================
-        this.grupoC = this.physics.add.group({
-            key: 'cocoro',
-                repeat: 2,
-                setXY: {
-                        x: 30,
-                        y: 25,
-                        stepX: 20
-                }
-        });
+        // // // C O C O R O  ==================================================================================================
+        // // this.grupoC = this.physics.add.group({
+        // //     key: 'cocoro',
+        // //         repeat: 2,
+        // //         setXY: {
+        // //                 x: 30,
+        // //                 y: 25,
+        // //                 stepX: 20
+        // //         }
+        // // });
 
-        this.grupoC.children.iterate( (cocoro) => {
-            cocoro.setScale(0.024);
-            cocoro.body.setAllowGravity(false);
-        } );
+        // // this.grupoC.children.iterate( (cocoro) => {
+        // //     cocoro.setScale(0.024);
+        // //     cocoro.body.setAllowGravity(false);
+        // // } );
         
         // this.cocoro = this.add.image(5, 10, 'cocoro')
         //     .setDepth(2)
@@ -77,10 +77,10 @@ class Vitalidad extends Phaser.Scene{
             this.cuadro,
             //this.texto,
             this.harper,
-            //this.cocoro
-            this.grupoC.getChildren()[0],
-            this.grupoC.getChildren()[1],
-            this.grupoC.getChildren()[2],
+            // // //this.cocoro
+            // // this.grupoC.getChildren()[0],
+            // // this.grupoC.getChildren()[1],
+            // // this.grupoC.getChildren()[2],
             
             //this.yoshi
         ]);
@@ -94,16 +94,40 @@ class Vitalidad extends Phaser.Scene{
            
             if (dato) {
                 // Aumenta vitalidad
-                console.log("Aumenta un 10%");
-                vitalidadActual += 0.2;
-                this.barrita.setScale(vitalidadActual, 2);
+                if((vitalidadActual) > 0.9 ){
+                    
+                    console.log("Aumenta un 1%");
+                    vitalidadActual += 0.01;
+                    this.barrita.setScale(vitalidadActual, 2);
+                }
 
             } else {
                 // Reduce vitalidad
-                console.log("Reduce un 10%");
-                vitalidadActual -= 0.2;
-                this.barrita.setScale(vitalidadActual, 2);
+                
+                if((vitalidadActual) > 0 ){
+                    console.log("Reduce un 1%");
+                    vitalidadActual -= 0.01;
+                    this.barrita.setScale(vitalidadActual, 2);
+                }
+                else {
+                        console.log("Reduce un 1%");
+                        vitalidadActual -= 0.01;
+                        
+                    if((vitalidadActual) <= 0 ){
+                        //this.barrita.setScale(0, 2);
+                        this.scene.start('Juego');
+                        this.scene.start('Vitalidad');
+                        this.scene.start('Items');
+                        //this.scene.restart('Bootloader');
+
+                        
+                        //this.scene.
+                    }
+
+                }
             }
+            console.log(vitalidadActual);
+
         });
     }
 
