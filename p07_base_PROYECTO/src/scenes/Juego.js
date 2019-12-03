@@ -123,8 +123,8 @@ class Juego extends Phaser.Scene{
         this.scene.launch('Vitalidad');
         this.scene.launch('Items');
 
-        // Harper Caminando //era x:50
-        this.harper_walking = this.physics.add.sprite(6470, 420, "harper_walking", 0);
+        // Harper Caminando //era x:6470
+        this.harper_walking = this.physics.add.sprite(50, 420, "harper_walking", 0);
         this.harper_walking.setOrigin(0,0);
         this.harper_walking.setScale(2,2);
         this.harper_walking.setDepth(2);
@@ -133,7 +133,7 @@ class Juego extends Phaser.Scene{
         //this.harper_walking.body.setGravityY(300);
         
         // Harper Saltando
-        this.harper_jumping = this.physics.add.sprite(6470,420, "harper_jumping",0);
+        this.harper_jumping = this.physics.add.sprite(50,420, "harper_jumping",0);
         this.harper_jumping.setOrigin(0,0);
         this.harper_jumping.setScale(2,2);
         this.harper_jumping.setDepth(2);
@@ -215,7 +215,7 @@ class Juego extends Phaser.Scene{
         });
 
         //Bloques flotantes solos
-        this.bloquef_1 = this.physics.add.staticImage(1800,1300,"bloqueFloat").setScale(2);
+        this.bloquef_1 = this.physics.add.staticImage(1800,1300,"bloqueFloat").setScale(2).setOffset(-28,-2).setSize(100,35);
 
         this.physics.add.collider(this.harper_walking,this.grupoBloquesFloat);
         this.physics.add.collider(this.harper_jumping,this.grupoBloquesFloat);
@@ -405,30 +405,30 @@ class Juego extends Phaser.Scene{
 
         /* ITEMS VITALIDAD ------------------------------------------------------------------------------------------------------ */
         // Frutas
-        // this.fruta_pera = this.physics.add.staticImage(1600,1195,"pera").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
-        // this.fruta_pera_2 = this.physics.add.staticImage(1600,1195,"pera").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
-        // this.fruta_manzana = this.physics.add.staticImage(1040,918,"manzana").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
-        // this.fruta_manzana_2 = this.physics.add.staticImage(2400,1195,"manzana").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
-        // this.fruta_naranja = this.physics.add.staticImage(800,1195,"naranja").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
-        // this.fruta_naranja_2 = this.physics.add.staticImage(800,1195,"naranja").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
-        // this.fruta_malo_1 = this.physics.add.staticImage(2000,1195,"frutaAlgo").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("bad");
-        // this.fruta_malo_2 = this.physics.add.staticImage(2000,1195,"frutaAlgo").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("bad");
+        this.fruta_pera = this.physics.add.staticImage(1600,1195,"pera").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        this.fruta_pera_2 = this.physics.add.staticImage(1600,1195,"pera").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        this.fruta_manzana = this.physics.add.staticImage(1040,918,"manzana").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        this.fruta_manzana_2 = this.physics.add.staticImage(2400,1195,"manzana").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        this.fruta_naranja = this.physics.add.staticImage(1800,1270,"naranja").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        this.fruta_naranja_2 = this.physics.add.staticImage(800,1195,"naranja").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        this.fruta_malo_1 = this.physics.add.staticImage(2800,1195,"frutaAlgo").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("bad");
+        this.fruta_malo_2 = this.physics.add.staticImage(3920,1020,"frutaAlgo").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("bad");
 
-        // this.grupoFrutas = this.physics.add.staticGroup();
-        // this.grupoFrutas.add(this.fruta_manzana);
-        // this.grupoFrutas.add(this.fruta_malo_1);
-        // this.grupoFrutas.add(this.fruta_pera);
-        // this.grupoFrutas.add(this.fruta_naranja);
-        // this.grupoFrutas.add(this.fruta_manzana_2);
-        // this.grupoFrutas.add(this.fruta_malo_2);
-        // this.grupoFrutas.add(this.fruta_pera_2);
-        // this.grupoFrutas.add(this.fruta_naranja_2);
+        this.grupoFrutas = this.physics.add.staticGroup();
+        this.grupoFrutas.add(this.fruta_manzana);
+        this.grupoFrutas.add(this.fruta_malo_1);
+        this.grupoFrutas.add(this.fruta_pera);
+        this.grupoFrutas.add(this.fruta_naranja);
+        this.grupoFrutas.add(this.fruta_manzana_2);
+        this.grupoFrutas.add(this.fruta_malo_2);
+        this.grupoFrutas.add(this.fruta_pera_2);
+        this.grupoFrutas.add(this.fruta_naranja_2);
         
-        // this.grupoFrutas.children.iterate( (fruta) => {        
-        //     fruta.setScale(.4);
-        // });
+        this.grupoFrutas.children.iterate( (fruta) => {        
+            fruta.setScale(.4);
+        });
   
-        // this.physics.add.overlap(this.harper_walking, this.grupoFrutas, this.collectFruta, null, this);
+        this.physics.add.overlap(this.harper_walking, this.grupoFrutas, this.collectFruta, null, this);
 
         /* ITEMS DEFENSA -------------------------------------------------------------------------------------------------------- */
         // Resortera
