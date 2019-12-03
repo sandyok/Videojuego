@@ -240,66 +240,7 @@ class Juego extends Phaser.Scene{
         console.log(this.data.list);
 
 
-        // // SHOOOTINGGGGG !! =================================================================================================================
-
-        // Shooting
-        var bullets;
-        var ship;
-        var speed;
-        var stats;
-        var cursors;
-        var lastFired = Number;
-        lastFired = 0;
         
-
-        var Bullet = new Phaser.Class({
-
-            Extends: Phaser.GameObjects.Image,
-    
-            initialize:
-    
-            function Bullet (scene)
-            {
-                Phaser.GameObjects.Image.call(this, scene, 10, 0, 'piedra');
-    
-                this.speed = Phaser.Math.GetSpeed(400, 1);
-                this.setScale(0.1);
-            },
-    
-            fire: function (x, y)
-            {
-                this.setPosition(x, y - 50);
-    
-                this.setActive(true);
-                this.setVisible(true);
-            },
-    
-            update: function (time, delta)
-            {
-                this.y -= this.speed * delta;
-    
-                if (this.y < -50)
-                {
-                    this.setActive(false);
-                    this.setVisible(false);
-                }
-            }
-    
-        });
-    
-        this.bullets = this.add.group({
-            classType: Bullet,
-            maxSize: 10,
-            runChildUpdate: true
-        });
-    
-        //this.ship = this.add.sprite(400, 1100, 'harper').setDepth(1).setVisible(false);
-    
-        this.ship = this.harper_walking;
-
-        this.cursors = this.input.keyboard.createCursorKeys();
-    
-        this.speed = Phaser.Math.GetSpeed(300, 1);
 
 
 
@@ -392,8 +333,8 @@ class Juego extends Phaser.Scene{
 
             this.registry.events.emit('eventoP', contador);
             this.data.list.piedras -= 1;
-            contador = contador+1;
-            console.log("Hay una piedra menos disponible");
+            contador = contador+ 1;
+            console.log("Hay una piedra menos disponible\nContador: " + contador);
         });
 
         //Cofre
@@ -444,8 +385,100 @@ class Juego extends Phaser.Scene{
         this.myCam.startFollow(this.harper_jumping);  
 
         // this.grupo.getChildren()[0].setSize();
+        
         this.cursor.space.on('down', () => {
+            var aux = Number;
+            aux = this.lanzaPiedra(contador);
+            if (aux >= 0)
+                contador = aux;
+            else
+                contador = 0;
+            
         });
+
+
+
+        // // SHOOOTINGGGGG !! =================================================================================================================
+
+        // // Shooting
+        // var bullets;
+        // var ship;
+        // var speed;
+        // var stats;
+        // var cursors;
+        // var lastFired = Number;
+        // lastFired = 0;
+        
+
+        // var Bullet = new Phaser.Class({
+
+        //     Extends: Phaser.GameObjects.Image,
+    
+        //     initialize:
+    
+        //     function Bullet (scene)
+        //     {
+        //         Phaser.GameObjects.Image.call(this, scene, 10, 0, 'piedra');
+    
+        //         this.speed = Phaser.Math.GetSpeed(400, 1);
+        //         this.setScale(0.1);
+        //     },
+    
+
+        //     lanzamiento: function (){
+        //         this.x += this.speed * 20;
+        //         //this.lanzamiento();
+        //     },
+
+        //     fire: function (x, y)
+        //     {
+        //         this.setPosition(x+20, y+20);
+    
+        //         this.setActive(true);
+        //         this.setVisible(true);
+
+        //         this.lanzamiento();
+
+        //     },
+    
+        //     update: function (time, delta)
+        //     {
+        //         //console.log(this.y);
+        //         //this.y -= this.speed * delta;
+        //         //this.x += this.speed * delta;
+                
+        //         //this.y -= this.velocity.y * delta;
+
+        //         //if ( (this.harper_walking.x - this.x) == 200 )
+
+        //         //console.log("Y: " + this.y);
+        //         //console.log("X: " + this.x);
+    
+        //         if (this.y < 1000)
+        //         //console.log(ship);
+        //         //if ( (this.x ) == 200 )
+        //         {
+        //             this.y += this.speed * delta;
+        //             this.setActive(false);
+        //             this.setVisible(false);
+        //         }
+        //     },
+
+            
+    
+        // });
+    
+        // this.bullets = this.add.group({
+        //     classType: Bullet,
+        //     maxSize: 1,
+        //     runChildUpdate: true
+        // });
+    
+        // //this.ship = this.add.sprite(400, 1100, 'harper').setDepth(1).setVisible(false);
+    
+        // this.ship = this.harper_walking;    
+        // this.cursors = this.input.keyboard.createCursorKeys();
+        // this.speed = Phaser.Math.GetSpeed(300, 1);
 
     }
 
@@ -500,9 +533,26 @@ class Juego extends Phaser.Scene{
     }
 
 
-    lanzaPiedra () {
+    lanzaPiedra (datoContador) {
      
-        
+        if(datoContador > 0) {
+
+            this.piedraL = this.physics.add.image(this.harper_jumping.x, this.harper_jumping.y, "piedra").setOrigin(0,0).setScale(0.1, 0.1);
+
+            if (!this.harper_walking.flipX)
+                this.piedraL.body.velocity.x = 800;
+            else
+                this.piedraL.body.velocity.x = -800;    
+
+            return datoContador -1;
+            
+        }
+        else {
+            console.log("Ya no tienes mas piedas!");
+        }
+
+       
+
         
     }
 
@@ -561,25 +611,25 @@ class Juego extends Phaser.Scene{
             }
         }
 
-        // Disparar piedra
-        if (this.cursors.left.isDown) {
-            //this.ship.x -= this.speed * delta;
-        }
-        else if (this.cursors.right.isDown) {
-            //this.ship.x += this.speed * delta;
-        }
-        //console.log(time + "" + this.lastFired);
-        if ((this.cursors.space.isDown)) {
+        // // // // Disparar piedra
+        // // // if (this.cursors.left.isDown) {
+        // // //     //this.ship.x -= this.speed * delta;
+        // // // }
+        // // // else if (this.cursors.right.isDown) {
+        // // //     //this.ship.x += this.speed * delta;
+        // // // }
+        // // // //console.log(time + "" + this.lastFired);
+        // // // if ((this.cursors.space.isDown)) {
 
-            // console.log("OK");
-            var bullet = this.bullets.get();
+        // // //     // console.log("OK");
+        // // //     var bullet = this.bullets.get();
 
-            if (bullet) {
+        // // //     if (bullet) {
 
-                bullet.fire(this.ship.x, this.ship.y);
-                this.lastFired += 50;
-            }
-        }
+        // // //         bullet.fire(this.ship.x, this.ship.y);
+        // // //         this.lastFired += 50;
+        // // //     }
+        // // // }
 
 
     }
