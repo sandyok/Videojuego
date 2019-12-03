@@ -160,15 +160,38 @@ class Juego extends Phaser.Scene{
         //this.physics.add.collider(this.encapuchado,this.grupoBloques);
 
         // Bloques Flotantes Pequeños
-        this.grupoBloquesFloat = this.physics.add.staticGroup({
-            key: 'bloqueFloat',
-            repeat: 2,
-            setXY: {
-                x: 800,
-                y: 1050,
-                stepX: 500
-            }
-        });
+        this.grupoBloquesFloat = this.physics.add.staticGroup();
+        this.grupoBloquesFloat.createMultiple(
+            [
+                {
+                    key: 'bloqueFloat',
+                    repeat: 2,
+                    setXY: {
+                        x: 800,
+                        y: 1050,
+                        stepX: 500
+                    }
+                },
+                {
+                    key: 'bloqueFloat',
+                    repeat: 2,
+                    setXY: {
+                        x: 3500,
+                        y: 1050,
+                        stepX: 400
+                    }
+                },
+                {
+                    key: 'bloqueFloat',
+                    repeat: 2,
+                    setXY: {
+                        x: 3700,
+                        y: 1200,
+                        stepX: 400
+                    }
+                }
+            ]
+        );
 
         this.grupoBloquesFloat.children.iterate((bloqueFloat) => {
             bloqueFloat.setScale(2);
@@ -176,13 +199,18 @@ class Juego extends Phaser.Scene{
             bloqueFloat.setSize(100,35);
         });
 
+        //Bloques flotantes solos
+        this.bloquef_1 = this.physics.add.staticImage(1800,1300,"bloqueFloat").setScale(2);
+
         this.physics.add.collider(this.harper_walking,this.grupoBloquesFloat);
         this.physics.add.collider(this.harper_jumping,this.grupoBloquesFloat);
+        this.physics.add.collider(this.harper_walking,this.bloquef_1);
+        this.physics.add.collider(this.harper_jumping,this.bloquef_1);
 
         // Bloques Flotantes Grandes
         this.grupoBloquesFloatG = this.physics.add.staticGroup({
             key: 'bloqueFloatG',
-            repeat: 2,
+            repeat: 1,
             setXY: {
                 x: 1040,
                 y: 950,
@@ -223,6 +251,14 @@ class Juego extends Phaser.Scene{
         this.grupoBloques.children.entries[7].destroy();
         this.grupoBloquesFusion.children.entries[7].destroy();
 
+        for(var i=0; i<5; i++){
+            this.grupoBloques.children.entries[13].destroy();
+            this.grupoBloquesFusion.children.entries[13].destroy();
+        }
+
+        console.log(this.grupoBloques.children.entries);
+        console.log(this.grupoBloquesFusion.children.entries);
+
         /* ANIMALES ------------------------------------------------------------------------------------------------------------- */
     
 
@@ -237,9 +273,9 @@ class Juego extends Phaser.Scene{
             key: 'tronco',
             repeat: 2,
             setXY: {
-                x: 400,
+                x: 2300,
                 y: 1175,
-                stepX: 100
+                stepX: 400
             }
         });
 
@@ -411,8 +447,8 @@ class Juego extends Phaser.Scene{
     // FUNCION para saltar
     saltarHarper(){
         if(this.cursor.up.isDown && (this.harper_jumping.body.onFloor() || this.harper_jumping.body.touching.down)){
-            this.harper_walking.body.velocity.y=-560;
-            this.harper_jumping.body.velocity.y=-560;
+            this.harper_walking.body.velocity.y=-525;
+            this.harper_jumping.body.velocity.y=-525;
         }
     }
 
@@ -469,7 +505,7 @@ class Juego extends Phaser.Scene{
                 this.encapuchado.setFlipX(false);
             }
         }
-        console.log(auxMovement);
+        //console.log(auxMovement);
     }
 }
 
