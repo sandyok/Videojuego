@@ -45,6 +45,11 @@ class Juego extends Phaser.Scene{
         this.load.image("bloqueFloatG", "Bloques/bloqueFlotanteG.png");
         this.load.image("bloqueNormal", "Bloques/bloqueNormal.png");
         this.load.image("bloqueFusion", "Bloques/bloqueFusion.png");
+        this.load.image("bloqueFusion_Der", "Bloques/bloqueFusion_Der.png");
+        this.load.image("bloqueFusion_DerComp", "Bloques/bloqueFusion_DerComp.png");
+        this.load.image("bloqueFusion_DerAbajo", "Bloques/bloqueFusion_DerAbajo.png");
+        this.load.image("bloqueCueva_Arriba", "Bloques/bloqueCueva_Arriba.png");
+        this.load.image("bloqueCueva", "Bloques/bloqueCueva.png");
 
         /* OBSTACULOS */
         this.load.image("tronco", "Objetos/tronco.png");
@@ -118,8 +123,8 @@ class Juego extends Phaser.Scene{
         this.scene.launch('Vitalidad');
         this.scene.launch('Items');
 
-        // Harper Caminando
-        this.harper_walking = this.physics.add.sprite(50, 420, "harper_walking", 0);
+        // Harper Caminando //era x:50
+        this.harper_walking = this.physics.add.sprite(6470, 420, "harper_walking", 0);
         this.harper_walking.setOrigin(0,0);
         this.harper_walking.setScale(2,2);
         this.harper_walking.setDepth(2);
@@ -128,7 +133,7 @@ class Juego extends Phaser.Scene{
         //this.harper_walking.body.setGravityY(300);
         
         // Harper Saltando
-        this.harper_jumping = this.physics.add.sprite(50,420, "harper_jumping",0);
+        this.harper_jumping = this.physics.add.sprite(6470,420, "harper_jumping",0);
         this.harper_jumping.setOrigin(0,0);
         this.harper_jumping.setScale(2,2);
         this.harper_jumping.setDepth(2);
@@ -166,6 +171,8 @@ class Juego extends Phaser.Scene{
         this.physics.add.collider(this.harper_walking,this.grupoBloques);
         this.physics.add.collider(this.harper_jumping,this.grupoBloques);
         //this.physics.add.collider(this.encapuchado,this.grupoBloques);
+
+        console.log(this.grupoBloques.children.entries[17].x);
 
         // Bloques Flotantes Pequeños
         this.grupoBloquesFloat = this.physics.add.staticGroup();
@@ -236,15 +243,83 @@ class Juego extends Phaser.Scene{
         this.physics.add.collider(this.harper_jumping,this.grupoBloquesFloatG);
 
         // Bloques Fusion
-        this.grupoBloquesFusion = this.physics.add.staticGroup({
-            key: 'bloqueFusion',
-            repeat: 23,
-            setXY: {
-                x: 126,
-                y: 1368,
-                stepX: 244
-            }
-        });
+        this.grupoBloquesFusion = this.physics.add.staticGroup();
+        this.grupoBloquesFusion.createMultiple(
+            [
+                {
+                    key: 'bloqueFusion',
+                    repeat: 24,
+                    setXY: {
+                        x: 126,
+                        y: 1368,
+                        stepX: 244
+                    }
+                },
+                {
+                    key: 'bloqueFusion',
+                    repeat: 6,
+                    setXY: {
+                        x: 126,
+                        y: 1486,
+                        stepX: 244
+                    }
+                },
+                {
+                    key: 'bloqueFusion',
+                    repeat: 5,
+                    setXY: {
+                        x: 2078,
+                        y: 1486,
+                        stepX: 244
+                    }
+                },
+                {
+                    key: 'bloqueFusion',
+                    repeat: 6,
+                    setXY: {
+                        x: 4762,
+                        y: 1486,
+                        stepX: 244
+                    }
+                },
+                {
+                    key: 'bloqueFusion',
+                    repeat: 6,
+                    setXY: {
+                        x: 4762,
+                        y: 1604,
+                        stepX: 244
+                    }
+                },
+                {
+                    key: 'bloqueFusion',
+                    repeat: 6,
+                    setXY: {
+                        x: 6714,
+                        y: 1014,
+                        stepX: 244
+                    }
+                },
+                {
+                    key: 'bloqueFusion',
+                    repeat: 6,
+                    setXY: {
+                        x: 6714,
+                        y: 1132,
+                        stepX: 244
+                    }
+                },
+                {
+                    key: 'bloqueFusion',
+                    repeat: 6,
+                    setXY: {
+                        x: 6714,
+                        y: 1250,
+                        stepX: 244
+                    }
+                }
+            ]
+        );
 
         this.grupoBloquesFusion.children.iterate( (bloqueFusion) => {
             bloqueFusion.setScale(5);
@@ -264,8 +339,40 @@ class Juego extends Phaser.Scene{
             this.grupoBloquesFusion.children.entries[13].destroy();
         }
 
-        console.log(this.grupoBloques.children.entries);
-        console.log(this.grupoBloquesFusion.children.entries);
+        /* CUEVA */ 
+        this.bloqueFusion_Der = this.physics.add.staticImage(5982,1250,"bloqueFusion_Der").setScale(5).setOffset(-100, -28).setSize(244,118);
+        this.bloqueFusion_DerComp = this.physics.add.staticImage(6226,1250,"bloqueFusion_DerComp").setScale(5).setOffset(-100, -28).setSize(244,118);
+        this.bloqueFusion_DerAbajo = this.physics.add.staticImage(6226,1368,"bloqueFusion_DerAbajo").setScale(5).setOffset(-100, -28).setSize(244,118);
+
+        this.physics.add.collider(this.harper_walking,this.bloqueFusion_Der);
+        this.physics.add.collider(this.harper_jumping,this.bloqueFusion_Der);
+        this.physics.add.collider(this.harper_walking,this.bloqueFusion_DerComp);
+        this.physics.add.collider(this.harper_jumping,this.bloqueFusion_DerComp);
+        this.physics.add.collider(this.harper_walking,this.bloqueFusion_DerAbajo);
+        this.physics.add.collider(this.harper_jumping,this.bloqueFusion_DerAbajo);
+
+        this.bloqueCueva_Arriba = this.physics.add.staticImage(6700,1100,"bloqueCueva_Arriba").setScale(5).setOffset(-100, -28).setSize(300,200);
+
+        // Bloques Cueva
+        this.grupoBloquesCueva = this.physics.add.staticGroup({
+            key: 'bloqueCueva',
+            repeat: 3,
+            setXY: {
+                x: 6470,
+                y: 1604,
+                stepX: 244
+            }
+        });
+
+        this.grupoBloquesCueva.children.iterate( (bloqueCueva) => {
+            bloqueCueva.setScale(5);
+            bloqueCueva.setOffset(-100,-55);
+            bloqueCueva.setSize(244,118);
+        } );
+
+        this.physics.add.collider(this.harper_walking,this.grupoBloquesCueva);
+        this.physics.add.collider(this.harper_jumping,this.grupoBloquesCueva);
+
 
         /* ANIMALES ------------------------------------------------------------------------------------------------------------- */
     
@@ -274,11 +381,6 @@ class Juego extends Phaser.Scene{
         this.data.set('resorteras', 3);
         this.data.set('piedras', 5);
         console.log(this.data.list);
-
-
-        
-
-
 
         /* OBSTACULOS ----------------------------------------------------------------------------------------------------------- */
         // Troncos
@@ -416,7 +518,7 @@ class Juego extends Phaser.Scene{
         });
         
         this.myCam = this.cameras.main;
-        this.myCam.setBounds(0,0,1150*5,2592);
+        this.myCam.setBounds(0,0,1150*7,2592);
         this.myCam.startFollow(this.harper_walking);
         this.myCam.startFollow(this.harper_jumping);  
 
@@ -585,16 +687,8 @@ class Juego extends Phaser.Scene{
         }
         else {
             console.log("Ya no tienes mas piedas!");
-        }
-
-       
-
-        
-    }
-
-        
-
-    
+        }        
+    }   
 
     update(time, delta) {
 
