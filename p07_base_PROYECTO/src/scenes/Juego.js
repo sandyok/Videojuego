@@ -38,6 +38,7 @@ class Juego extends Phaser.Scene{
         // Bloques
         this.load.image("bloque", "Bloques/bloque.png");
         this.load.image("bloqueFloat", "Bloques/bloqueFlotante.png");
+        this.load.image("bloqueFloatG", "Bloques/bloqueFlotanteG.png");
         this.load.image("bloqueNormal", "Bloques/bloqueNormal.png");
         this.load.image("bloqueFusion", "Bloques/bloqueFusion.png");
 
@@ -156,16 +157,16 @@ class Juego extends Phaser.Scene{
 
         this.physics.add.collider(this.harper_walking,this.grupoBloques);
         this.physics.add.collider(this.harper_jumping,this.grupoBloques);
-        this.physics.add.collider(this.encapuchado,this.grupoBloques);
+        //this.physics.add.collider(this.encapuchado,this.grupoBloques);
 
-        // Bloques flotantes
+        // Bloques Flotantes Pequeños
         this.grupoBloquesFloat = this.physics.add.staticGroup({
             key: 'bloqueFloat',
             repeat: 2,
             setXY: {
-                x: 500,
+                x: 800,
                 y: 1050,
-                stepX: 900
+                stepX: 500
             }
         });
 
@@ -177,6 +178,26 @@ class Juego extends Phaser.Scene{
 
         this.physics.add.collider(this.harper_walking,this.grupoBloquesFloat);
         this.physics.add.collider(this.harper_jumping,this.grupoBloquesFloat);
+
+        // Bloques Flotantes Grandes
+        this.grupoBloquesFloatG = this.physics.add.staticGroup({
+            key: 'bloqueFloatG',
+            repeat: 2,
+            setXY: {
+                x: 1040,
+                y: 950,
+                stepX: 900
+            }
+        });
+
+        this.grupoBloquesFloatG.children.iterate((bloqueFloatG) => {
+            bloqueFloatG.setScale(2);
+            bloqueFloatG.setOffset(-50,-2);
+            bloqueFloatG.setSize(198,35);
+        });
+
+        this.physics.add.collider(this.harper_walking,this.grupoBloquesFloatG);
+        this.physics.add.collider(this.harper_jumping,this.grupoBloquesFloatG);
 
         // Bloques Fusion
         this.grupoBloquesFusion = this.physics.add.staticGroup({
@@ -199,6 +220,11 @@ class Juego extends Phaser.Scene{
         this.physics.add.collider(this.harper_walking,this.grupoBloquesFusion);
         this.physics.add.collider(this.harper_jumping,this.grupoBloquesFusion);
 
+        this.grupoBloques.children.entries[7].destroy();
+        this.grupoBloquesFusion.children.entries[7].destroy();
+
+        /* ANIMALES ------------------------------------------------------------------------------------------------------------- */
+    
 
         // Declarar set
         this.data.set('resorteras', 3);
@@ -206,44 +232,52 @@ class Juego extends Phaser.Scene{
         console.log(this.data.list);
 
         /* OBSTACULOS ----------------------------------------------------------------------------------------------------------- */
-        this.grupoTroncos= this.physics.add.staticGroup({
+        // Troncos
+        this.grupoTroncos = this.physics.add.staticGroup({
             key: 'tronco',
-            repeat: 23,
+            repeat: 2,
             setXY: {
-                x: 126,
+                x: 400,
                 y: 1175,
-                stepX: 244
+                stepX: 100
             }
         });
 
-        this.grupoTroncos.children.iterate( (tronco) => {
-            tronco.setScale(.2);
-            // Cambiamos el tamano del colisionador 
-            tronco.setOffset(-75, 186);
-            tronco.setSize(30,30);
-        } );
+        this.grupoTroncos.children.iterate((tronco) => {
+            tronco.setScale(0.19);
+            tronco.setOffset(165,185);
+            tronco.setSize(40,50);
+        });
 
         this.physics.add.collider(this.harper_walking,this.grupoTroncos);
         this.physics.add.collider(this.harper_jumping,this.grupoTroncos);
 
         /* ITEMS VITALIDAD ------------------------------------------------------------------------------------------------------ */
         // Frutas
-        this.fruta_pera = this.physics.add.staticImage(1600,1195,"pera").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
-        this.fruta_manzana = this.physics.add.staticImage(2400,1195,"manzana").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
-        this.fruta_naranja = this.physics.add.staticImage(800,1195,"naranja").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
-        this.fruta_malo1 = this.physics.add.staticImage(2000,1195,"frutaAlgo").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("bad");
+        // this.fruta_pera = this.physics.add.staticImage(1600,1195,"pera").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        // this.fruta_pera_2 = this.physics.add.staticImage(1600,1195,"pera").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        // this.fruta_manzana = this.physics.add.staticImage(1040,918,"manzana").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        // this.fruta_manzana_2 = this.physics.add.staticImage(2400,1195,"manzana").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        // this.fruta_naranja = this.physics.add.staticImage(800,1195,"naranja").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        // this.fruta_naranja_2 = this.physics.add.staticImage(800,1195,"naranja").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("good");
+        // this.fruta_malo_1 = this.physics.add.staticImage(2000,1195,"frutaAlgo").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("bad");
+        // this.fruta_malo_2 = this.physics.add.staticImage(2000,1195,"frutaAlgo").setScale(.4,.4).setOffset(20,23).setSize(23,38).setName("bad");
 
-        this.grupoFrutas = this.physics.add.staticGroup();
-        this.grupoFrutas.add(this.fruta_manzana);
-        this.grupoFrutas.add(this.fruta_malo1);
-        this.grupoFrutas.add(this.fruta_pera);
-        this.grupoFrutas.add(this.fruta_naranja);
+        // this.grupoFrutas = this.physics.add.staticGroup();
+        // this.grupoFrutas.add(this.fruta_manzana);
+        // this.grupoFrutas.add(this.fruta_malo_1);
+        // this.grupoFrutas.add(this.fruta_pera);
+        // this.grupoFrutas.add(this.fruta_naranja);
+        // this.grupoFrutas.add(this.fruta_manzana_2);
+        // this.grupoFrutas.add(this.fruta_malo_2);
+        // this.grupoFrutas.add(this.fruta_pera_2);
+        // this.grupoFrutas.add(this.fruta_naranja_2);
         
-        this.grupoFrutas.children.iterate( (fruta) => {        
-            fruta.setScale(.4);
-        });
+        // this.grupoFrutas.children.iterate( (fruta) => {        
+        //     fruta.setScale(.4);
+        // });
   
-        this.physics.add.overlap(this.harper_walking, this.grupoFrutas, this.collectFruta, null, this);
+        // this.physics.add.overlap(this.harper_walking, this.grupoFrutas, this.collectFruta, null, this);
 
         /* ITEMS DEFENSA -------------------------------------------------------------------------------------------------------- */
         // Resortera
@@ -415,11 +449,8 @@ class Juego extends Phaser.Scene{
         var auxMovement = Number;
         auxMovement = this.encapuchado.x;
 
-
-        if ( this.encapuchado.flipX == false ){
-            
+        if ( this.encapuchado.flipX == false ){ 
             auxMovement -= (1.2/delta)+1;
-            
             if (auxMovement > 420 ) {
                 this.encapuchado.setX(auxMovement);
                 //console.log("----" + (1.5/delta));                
@@ -429,22 +460,16 @@ class Juego extends Phaser.Scene{
             }            
         } 
         else {
-
             auxMovement += (1.2/delta)+1;
             if (auxMovement < 500 ) {
-
                 this.encapuchado.setX(auxMovement);
                 //console.log("-----------------> " + (1.5/delta));                
             }
             else {
                 this.encapuchado.setFlipX(false);
             }
-
-            
         }
-        //console.log(auxMovement);
-
-
+        console.log(auxMovement);
     }
 }
 
